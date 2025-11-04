@@ -1,3 +1,4 @@
+import datetime
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 import psutil
@@ -38,7 +39,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 # ADD disk usage?
                 "nic":psutil.net_if_addrs(),
                 "netcons":psutil.net_connections(kind='inet'),
-                "timestamp": asyncio.get_event_loop().time()
+                "boottime":datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%Y-%m-%d %H:%M:%S")
             }
             await websocket.send_text(json.dumps(message))
             await asyncio.sleep(2)
