@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <div id="messages"></div>
+    </div> 
+    
+    <script>
+        const ws = new WebSocket('ws://127.0.0.1:8000/ws');
+        
+        ws.onmessage = function(event) {
+            console.log('Raw message:', event.data);
+            const data = JSON.parse(event.data);
+            const messages = document.getElementById('messages');
+            let coresText = '';
+            data.cpucore.forEach((core, index) => {
+                coresText += `<p>Core ${index}: ${core}%</p>`;
+            });
+            let freqText = '';
+            data.frequencycore.forEach((core, index) => {
+                freqText += `<p>Core ${index} frequency: ${core}Mhz</p>`;
+            });
+            
+            messages.innerHTML =`<p>CPU usage: ${data.cpu}%</p>` 
+                                +`<p>CPU cores: ${data.cores}</p>` 
+                                +`<p>CPU threads: ${data.threads}</p>` 
+                                + coresText + 
+                                `<p>CPU frequency: ${data.frequency[0]} MHz</p>`
+                                + freqText;
+        };
+        
+        
+        ws.onopen = function() {
+            console.log('Connected to WebSocket');
+        };
+        
+        ws.onclose = function() {
+            console.log('WebSocket connection closed');
+        };
+    </script>
+</body>
+</html>
