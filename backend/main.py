@@ -33,6 +33,11 @@ async def websocket_endpoint(websocket: WebSocket):
                 "threads": psutil.cpu_count(),
                 "frequency":psutil.cpu_freq(),
                 "frequencycore":psutil.cpu_freq(percpu=True),
+                "ram":psutil.virtual_memory(),
+                "disk":psutil.disk_partitions(all=False),
+                # ADD disk usage?
+                "nic":psutil.net_if_addrs(),
+                "netcons":psutil.net_connections(kind='inet'),
                 "timestamp": asyncio.get_event_loop().time()
             }
             await websocket.send_text(json.dumps(message))
