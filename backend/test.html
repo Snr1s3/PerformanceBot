@@ -15,61 +15,8 @@
             const data = JSON.parse(event.data);
             const messages = document.getElementById('messages');
             let coresText = '';
-            data.cpucore.forEach((core, index) => {
-                coresText += `<p>Core ${index}: ${core}%</p>`;
-            });
-            let freqText = '';
-            data.frequencycore.forEach((core, index) => {
-                freqText += `<p>Core ${index} frequency: ${core}Mhz</p>`;
-            });
-            let diskText = '';
-            data.disk.forEach((diskInfo, index) => {
-                diskText += `<p>Disk ${index}: | name: ${diskInfo[0]} | mount: ${diskInfo[1]} | fstype: ${diskInfo[2]}</p>`;
-            });
-            let nicText = '';
-            Object.keys(data.nic).forEach((interfaceName, index) => {
-                const addresses = data.nic[interfaceName];  // Fixed: use interfaceName as key
-                nicText += `<p>Interface nic ${interfaceName}:</p>`;
-                addresses.forEach((addr, addrIndex) => {
-                    nicText += `<p>&nbsp;&nbsp;Address ${addrIndex}: ${addr[1]} (Family: ${addr[0]})</p>`;  // Fixed: addr[1] is IP, addr[0] is family
-                });
-            });
-
-            let netconsText = '';
-            data.netcons.forEach((conn, index) => {
-                const fd = conn[0];
-                const family = conn[1];
-                const type = conn[2];
-                const localAddr = conn[3];  // [ip, port]
-                const remoteAddr = conn[4]; // [ip, port] or []
-                const status = conn[5];
-                const pid = conn[6];
-                
-                netconsText += `<p>Connection ${index}:</p>`;
-                netconsText += `<p>&nbsp;&nbsp;FD: ${fd} | Family: ${family} | Type: ${type}</p>`;
-                netconsText += `<p>&nbsp;&nbsp;Local: ${localAddr[0]}:${localAddr[1]}`;
-                if (remoteAddr.length > 0) {
-                    netconsText += ` → Remote: ${remoteAddr[0]}:${remoteAddr[1]}`;
-                } else {
-                    netconsText += ` → Remote: none`;
-                }
-                netconsText += `</p>`;
-                netconsText += `<p>&nbsp;&nbsp;Status: ${status} | PID: ${pid || 'none'}</p>`;
-            });
-            
-            messages.innerHTML =`<p>CPU usage: ${data.cpu}%</p>`+ 
-                                `<p>CPU cores: ${data.cores}</p>`+
-                                `<p>CPU threads: ${data.threads}</p>`+
-                                coresText + 
-                                `<p>CPU frequency: ${data.frequency[0]} MHz</p>`+
-                                freqText +
-                                `<p>Ram total: ${(data.ram[0] / (1024**3)).toFixed(2) } GB</p>`+
-                                `<p>Ram available: ${(data.ram[1] / (1024**3)).toFixed(2)} GB</p>`+
-                                `<p>Ram usage: ${data.ram[2]}%</p>`+
-                                diskText+
-                                nicText+
-                                netconsText+
-                                `<p>Boot time: ${data.boottime}</p>`; 
+        
+            messages.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
         };
         
         
