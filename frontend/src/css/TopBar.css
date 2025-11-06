@@ -1,0 +1,48 @@
+.topbar {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.topbar {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.topbar h1 {
+  margin: 0 0 15px 0;
+  font-size: 24px;
+}
+
+.tabs {
+  display: flex;
+  gap: 5px;
+}
+
+.tab {
+  background-color: #1a1d23;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.tab:hover {
+  background-color: #2d3139;
+}
+
+.tab.active {
+  background-color: #3a3f4b;
+  border-bottom: 3px solid #007bff;
+}
