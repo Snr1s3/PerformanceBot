@@ -232,6 +232,10 @@ async def system_monitor():
                         "release": platform.release(),         
                         "version": platform.version(),         
                         "machine": platform.machine(),
+                        "boottime": datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%Y-%m-%d %H:%M:%S"),
+                        "uptime_seconds": int(time.time() - psutil.boot_time()),
+                        "users_count": len(users_json),
+                        "users": users_json,
                     },
                     "cpu": {
                         "cores_count": psutil.cpu_count(logical=False),
@@ -257,12 +261,6 @@ async def system_monitor():
                         "battery": battery_json,
                         "fans": fans_json,
                         "temperatures": temperatures_json,
-                    },
-                    "others": {
-                        "boottime": datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%Y-%m-%d %H:%M:%S"),
-                        "uptime_seconds": int(time.time() - psutil.boot_time()),
-                        "users_count": len(users_json),
-                        "users": users_json,
                     },
                     "docker":{
                         "images": docker_images,
