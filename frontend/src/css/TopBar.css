@@ -2,29 +2,19 @@
   background-color: #282c34;
   padding: 20px;
   color: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;              /* Add this */
+  flex-direction: column;     /* Add this */
+  align-items: center;        /* Centers horizontally */
+  gap: 15px;                  /* Space between h1 and buttons */
 }
 
 .topbar h1 {
   margin: 0;
-  font-size: 24px;
-}
-
-.topbar {
-  background-color: #282c34;
-  padding: 20px;
-  color: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.topbar h1 {
-  margin: 0 0 15px 0;
-  font-size: 24px;
 }
 
 .tabs {
   display: flex;
-  gap: 5px;
+  gap: 10px;                  /* Space between buttons */
 }
 
 .tab {
