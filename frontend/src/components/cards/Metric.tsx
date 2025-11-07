@@ -3,15 +3,15 @@ import React from 'react';
 interface MetricProps {
     label: string;
     value: string | number;
-    prefix?: string;  // Optional with ?
+    suffix?: string;  // Optional with ?
 }
 
-function Metric({ label, value, prefix }: MetricProps) {
+function Metric({ label, value, suffix }: MetricProps) {
     return (
         <div className="metric">
             <span className="metric-label">{label}: </span>
             <span className="metric-value">
-                {value}{prefix && prefix}
+                {value}{suffix && suffix}
             </span>
         </div>
     );

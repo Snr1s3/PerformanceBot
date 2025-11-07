@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../css/TopBar.css';
-import Btn from './Button';  // Remove 'components/'
-import SystemInfoCard from './cards/SystemInfoCard';  // Remove 'components/'
-import CpuInfoCard from './cards/CpuInfoCard';  // Remove 'components/'
+import Btn from './Button.tsx';
+import SystemInfoCard from './cards/SystemInfoCard.tsx'; 
+import CpuInfoCard from './cards/CpuInfoCard.tsx';  
+import MemoryInfoCard from './cards/MemoryInfoCard.tsx';
 
 
 interface SystemData {
-    timestamp: string;
     system_info: {
         platform: string;
         node: string;
         release: string;
         version: string;
         machine: string;
+        boottime:string;
+        uptime_seconds:number;
+        users_count: number;
     };
     cpu: {
         cpu: number;
@@ -20,6 +23,12 @@ interface SystemData {
         threads_count: number;
         frequency: number;
         cpu_core: { [key: string]: number };
+    };
+
+    memory: {
+        ram_total: number;
+        ram_available: number;
+        ram_percent: number;
     };
 }
 
@@ -60,13 +69,18 @@ function TopBar() {
                     <Btn label="Memory" tabName="memory" activeTab={activeTab} setActiveTab={setActiveTab} />
                     <Btn label="Network" tabName="network" activeTab={activeTab} setActiveTab={setActiveTab} />
                     <Btn label="Sensor" tabName="sensor" activeTab={activeTab} setActiveTab={setActiveTab} />
-                    <Btn label="Other" tabName="other" activeTab={activeTab} setActiveTab={setActiveTab} />
                     <Btn label="Docker" tabName="docker" activeTab={activeTab} setActiveTab={setActiveTab} />
                 </div>
             </div>
             {activeTab === 'dashboard' && (<pre>{JSON.stringify(data, null, 2)}</pre>)}
             {activeTab === 'system' && data?.system_info && (
-                <SystemInfoCard systemInfo={data.system_info} />
+                <SystemInfoCard system_info={data.system_info} />
+            )}
+            {activeTab === 'cpu' && data?.cpu && (
+                <CpuInfoCard cpu={data.cpu} />
+            )}
+            {activeTab === 'memory' && data?.memory && (
+                <MemoryInfoCard memoryInfo={data.memory} />
             )}
         </div>
     );
