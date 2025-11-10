@@ -5,6 +5,13 @@ import SystemInfoCard from './cards/SystemInfoCard.tsx';
 import CpuInfoCard from './cards/CpuInfoCard.tsx';  
 import MemoryInfoCard from './cards/MemoryInfoCard.tsx';
 
+interface UserInfo {
+    name: string;
+    terminal: string;
+    host: string;
+    started: number;
+    pid: number;
+}
 
 interface SystemData {
     system_info: {
@@ -16,6 +23,7 @@ interface SystemData {
         boottime:string;
         uptime_seconds:number;
         users_count: number;
+        users?:UserInfo[];
     };
     cpu: {
         cpu: number;
@@ -59,7 +67,7 @@ function TopBar() {
         };
     }, []);  
     return (
-        <div>
+        <div className="app">
             <div className="topbar">
                 <h1>Performance Dashboard</h1>
                 <div className='tabs'>
@@ -72,16 +80,22 @@ function TopBar() {
                     <Btn label="Docker" tabName="docker" activeTab={activeTab} setActiveTab={setActiveTab} />
                 </div>
             </div>
-            {activeTab === 'dashboard' && (<pre>{JSON.stringify(data, null, 2)}</pre>)}
-            {activeTab === 'system' && data?.system_info && (
-                <SystemInfoCard system_info={data.system_info} />
-            )}
-            {activeTab === 'cpu' && data?.cpu && (
-                <CpuInfoCard cpu={data.cpu} />
-            )}
-            {activeTab === 'memory' && data?.memory && (
-                <MemoryInfoCard memoryInfo={data.memory} />
-            )}
+            <div className="content-area">
+                {activeTab === 'dashboard' && (
+                    <pre style={{margin:0, background:'#141418', color:'#eee', padding:'12px', borderRadius:8, overflow:'auto'}}>
+                      {data ? JSON.stringify(data, null, 2) : 'Waiting for data...'}
+                    </pre>
+                )}
+                {activeTab === 'system' && data?.system_info && (
+                    <SystemInfoCard system_info={data.system_info} />
+                )}
+                {activeTab === 'cpu' && data?.cpu && (
+                    <CpuInfoCard cpu={data.cpu} />
+                )}
+                {activeTab === 'memory' && data?.memory && (
+                    <MemoryInfoCard memoryInfo={data.memory} />
+                )}
+            </div>
         </div>
     );
 }
