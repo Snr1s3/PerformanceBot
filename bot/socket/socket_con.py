@@ -21,26 +21,28 @@ class SocketCon:
     def receive(self):
         if self.ws:
             return self.ws.recv()
-        
-    def systeminfo(self):
+    
+    def get_info(self, section: str, formatter: callable) -> list:
         content = self.receive()
         arr = []
         try:
             data = json.loads(content)
-            system_info = data.get("system_info", {})
-            for key, value in system_info.items():
-                arr.append(f"{key.upper()} : {value}")
+            info = data.get(section, {})
+            arr = formatter(info)
         except Exception as e:
             print("Error parsing JSON:", e)
             print("Raw content:", content)
         return arr
+    
+    def systeminfo(self):
+        def formatter(info):
+            return [f"{k.upper()} : {v}" for k, v in info.items()]
+        return self.get_info("system_info", formatter)
+
     def cpuinfo(self):
-        content = self.receive()
-        arr = []
-        try:
-            data = json.loads(content)
-            system_info = data.get("cpu", {})
-            for key, value in system_info.items():
+        def formatter(info):
+            arr = []
+            for key, value in info.items():
                 key_upper = key.upper()
                 if key_upper == "CPU":
                     value = str(value) + " %"
@@ -48,17 +50,13 @@ class SocketCon:
                     value = str(value) + " GHz"
                 if key_upper not in ("CPU_CORE", "FREQUENCY_CORE"):
                     arr.append(f"{key_upper} : {value}")
-        except Exception as e:
-            print("Error parsing JSON:", e)
-            print("Raw content:", content)
-        return arr
+            return arr
+        return self.get_info("cpu", formatter)
+
     def memoryinfo(self):
-        content = self.receive()
-        arr = []
-        try:
-            data = json.loads(content)
-            system_info = data.get("memory", {})
-            for key, value in system_info.items():
+        def formatter(info):
+            arr = []
+            for key, value in info.items():
                 key_upper = key.upper()
                 if key_upper == "RAM_TOTAL":
                     value = str(value) + " GB"
@@ -67,17 +65,13 @@ class SocketCon:
                 elif key_upper == "RAM_PERCENT":
                     value = str(value) + " %"
                 arr.append(f"{key_upper} : {value}")
-        except Exception as e:
-            print("Error parsing JSON:", e)
-            print("Raw content:", content)
-        return arr
+            return arr
+        return self.get_info("memory", formatter)
+
     def diskinfo(self):
-        content = self.receive()
-        arr = []
-        try:
-            data = json.loads(content)
-            system_info = data.get("disks", {})
-            for key, value in system_info.items():
+        def formatter(info):
+            arr = []
+            for key, value in info.items():
                 key_upper = key.upper()
                 if key_upper == "DISK" and isinstance(value, list):
                     for disk in value:
@@ -85,17 +79,13 @@ class SocketCon:
                         arr.append(f"{disk_str}\n")
                 else:
                     arr.append(f"{key_upper} : {value}")
-        except Exception as e:
-            print("Error parsing JSON:", e)
-            print("Raw content:", content)
-        return arr
+            return arr
+        return self.get_info("disk", formatter)
+
     def dockerinfo(self):
-        content = self.receive()
-        arr = []
-        try:
-            data = json.loads(content)
-            docker_info = data.get("docker", {})
-            images = docker_info.get("images", [])
+        def formatter(info):
+            arr = []
+            images = info.get("images", [])
             if images:
                 arr.append("DOCKER IMAGES:")
                 for img in images:
@@ -107,7 +97,7 @@ class SocketCon:
                             f"  Size: {value.get('size_mb', 'N/A')} MB\n"
                             f"  Created: {value.get('created', 'N/A')}\n"
                         )
-            containers = docker_info.get("containers", [])
+            containers = info.get("containers", [])
             if containers:
                 arr.append("DOCKER CONTAINERS:")
                 for cont in containers:
@@ -119,20 +109,14 @@ class SocketCon:
                             f"  Image: {value.get('image', 'N/A')}\n"
                             f"  Created: {value.get('created', 'N/A')}\n"
                         )
-        except Exception as e:
-            print("Error parsing JSON:", e)
-            print("Raw content:", content)
-        return arr
-    def networkinfo(self):
-        content = self.receive()
-        arr = []
-        try:
-            data = json.loads(content)
-            network_info = data.get("network", {})
-            io_counters = network_info.get("io_counters", {})
-            interfaces = network_info.get("interfaces", {})
+            return arr
+        return self.get_info("docker", formatter)
 
-            # IO COUNTERS
+    def networkinfo(self):
+        def formatter(info):
+            arr = []
+            io_counters = info.get("io_counters", {})
+            interfaces = info.get("interfaces", {})
             if io_counters:
                 arr.append("IO COUNTERS:")
                 total = io_counters.get("total", {})
@@ -147,8 +131,6 @@ class SocketCon:
                         arr.append(f"    {iface}:")
                         for k, v in stats.items():
                             arr.append(f"      {k}: {v}")
-
-            # INTERFACES
             if interfaces:
                 arr.append("INTERFACES:")
                 for iface, info in interfaces.items():
@@ -164,28 +146,21 @@ class SocketCon:
                         for addr in addresses:
                             addr_str = ", ".join(f"{k}: {v}" for k, v in addr.items())
                             arr.append(f"      {addr_str}")
+            return arr
+        return self.get_info("network", formatter)
 
-        except Exception as e:
-            print("Error parsing JSON:", e)
-            print("Raw content:", content)
-        return arr
     def sensorsinfo(self):
-        content = self.receive()
-        arr = []
-        try:
-            data = json.loads(content)
-            sensors = data.get("sensors", {})
-            for key, value in sensors.items():
+        def formatter(info):
+            arr = []
+            for key, value in info.items():
                 key_upper = key.upper()
-                if isinstance(value, dict) and value:  # non-empty dict
+                if isinstance(value, dict) and value:
                     arr.append(f"{key_upper}:")
                     for subkey, subval in value.items():
                         arr.append(f"  {subkey}: {subval}")
-                elif isinstance(value, dict) and not value:  # empty dict
+                elif isinstance(value, dict) and not value:
                     arr.append(f"{key_upper}: none")
                 else:
                     arr.append(f"{key_upper}: {value}")
-        except Exception as e:
-            print("Error parsing JSON:", e)
-            print("Raw content:", content)
-        return arr
+            return arr
+        return self.get_info("sensors", formatter)
