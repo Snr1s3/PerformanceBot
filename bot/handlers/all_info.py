@@ -1,23 +1,35 @@
 from telegram import Update
 from telegram.ext import ContextTypes
-from .system_info import system_info
-from .cpu_info import cpu_info
-from .memory_info import memory_info
-from .disk_info import disk_info
-from .network_info import network_info
-from .docker_info import docker_info
-from .sensors_info import sensors_info
 
-async def all_info(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    # Collect info from each handler as text
-    msgs = []
-    
-    msg = "<b>All System Info:</b>\n"
-    await update.message.reply_text(msg, parse_mode="HTML")
-    for func in [system_info, cpu_info, memory_info, disk_info, network_info, docker_info, sensors_info]:
-        # Each info function should return a string, not send a message directly
-        if hasattr(func, "get_text"):
-            msgs.append(await func.get_text(update, context))
-        else:
-            # fallback: call and ignore output
-            await func(update, context)
+from bot.handlers.base_info import BaseInfo
+from .system_info import SystemInfo
+from .cpu_info import CpuInfo
+from .memory_info import MemoryInfo
+from .disk_info import DiskInfo
+from .network_info import NetworkInfo
+from .docker_info import DockerInfo
+from .sensors_info import SensorsInfo
+
+
+class AllInfo(BaseInfo):
+    async def all_info(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        msg = "<b>All System Info:</b>\n"
+        await update.message.reply_text(msg, parse_mode="HTML")
+
+        handlers = [
+            SystemInfo(),
+            CpuInfo(),
+            MemoryInfo(),
+            DiskInfo(),
+            NetworkInfo(),
+            DockerInfo(),
+            SensorsInfo()
+        ]
+
+        for handler in handlers:
+            if hasattr(handler, "get_text"):
+                text = await handler.get_text(update, context)
+                await update.message.reply_text(text, parse_mode="HTML")
+            elif hasattr(handler, "info"):
+                text = await handler.info(update, context)
+                await update.message.reply_text(text, parse_mode="HTML")

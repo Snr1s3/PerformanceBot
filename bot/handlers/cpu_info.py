@@ -1,12 +1,10 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from bot.socket.socket_con import SocketCon
+from bot.handlers.base_info import BaseInfo
 
-
-async def cpu_info(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    sock = SocketCon()
-    sock.connect()
-    content = sock.systeminfo()
-    msg = "<b>CPU INFO:</b>\n" + "\n".join(content)
-    await update.message.reply_text(msg, parse_mode="HTML")
+class CpuInfo(BaseInfo):
+    async def cpu_info(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        content = self.systeminfo()
+        msg = "<b>CPU INFO:</b>\n" + "\n".join(content)
+        await update.message.reply_text(msg, parse_mode="HTML")
