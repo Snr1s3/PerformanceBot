@@ -1,0 +1,113 @@
+:root {
+  --topbar-height: 72px;
+  --bg-surface: #1f1f24;
+  --bg-tile: #24242a;
+  --bg-tile-alt: #1a1a1f;
+  --border-color: #2b2b31;
+  --text-primary: #eee;
+  --text-secondary: #cfcfd4;
+  --text-dim: #9aa0ac;
+  --accent: #0066ff;
+  --radius: 10px;
+}
+
+.system-card {
+  box-sizing: border-box;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 28px 32px 34px;
+  width: 100%;
+  min-height: calc(100vh - var(--topbar-height));
+  display: flex;
+  flex-direction: column;
+  color: var(--text-primary);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg-surface);
+}
+
+.system-card::-webkit-scrollbar {
+  width: 10px;
+}
+.system-card::-webkit-scrollbar-track {
+  background: var(--bg-surface);
+}
+.system-card::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 6px;
+}
+.system-card::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+.card-title {
+  margin: 0 0 20px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: .5px;
+}
+
+.metrics-grid {
+  display: grid;
+  /* auto-fit ensures full-width tiles; minmax keeps them responsive */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 14px 18px;
+  width: 100%;
+}
+
+.metrics-grid > div {
+  background: linear-gradient(140deg, var(--bg-tile) 0%, var(--bg-tile-alt) 70%);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: .82rem;
+  line-height: 1.2;
+  position: relative;
+  transition: border-color .15s, background .25s, transform .15s;
+}
+
+.metrics-grid > div:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.metrics-grid strong {
+  font-weight: 500;
+  color: var(--text-dim);
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+}
+
+.metrics-grid span {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: .9rem;
+  word-break: break-word;
+}
+
+/* Responsive tweaks */
+@media (max-width: 800px) {
+  .system-card {
+    padding: 20px 20px 28px;
+    border-radius: 0;
+    min-height: calc(100vh - var(--topbar-height));
+  }
+  .card-title {
+    font-size: 1.15rem;
+    margin-bottom: 16px;
+  }
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 14px;
+  }
+}
+@media (max-width: 520px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
