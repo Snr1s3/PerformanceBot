@@ -1,6 +1,5 @@
 import logging
-from telegram import Update
-from telegram.ext import ApplicationBuilder, PicklePersistence
+from telegram.ext import ApplicationBuilder
 from bot.config import BOT_TOKEN2
 from bot.handlers import setup_handlers
 
