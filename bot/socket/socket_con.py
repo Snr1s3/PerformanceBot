@@ -18,10 +18,6 @@ class SocketCon:
             self.ws = websocket.WebSocket()
             self.ws.connect(url)
 
-    def send(self, message):
-        if self.ws:
-            self.ws.send(message)
-
     def receive(self):
         if self.ws:
             return self.ws.recv()
@@ -193,36 +189,3 @@ class SocketCon:
             print("Error parsing JSON:", e)
             print("Raw content:", content)
         return arr
-
-def test_connect_and_receive():
-    sock = SocketCon()
-    sock.connect("ws://localhost:8000/ws")
-    response = sock.receive()
-    print("Received:", response)
-    """
-        print("\n\n\n\n")
-        for a in sock.systeminfo():
-            print(a)
-        print("\n\n\n\n")
-        for a in sock.cpuinfo():
-            print(a)
-        print("\n\n\n\n")
-        for a in sock.memoryinfo():
-            print(a)
-            
-        print("\n\n\n\n")
-        for a in sock.diskinfo():
-            print(a)    
-        print("\n\n\n\n")
-        for a in sock.dockerinfo():
-            print(a)
-    """
-    print("\n\n\n\n")
-    for a in sock.networkinfo():
-        print(a)
-    print("\n\n\n\n")
-    for a in sock.sensorsinfo():
-        print(a)
-if __name__ == "__main__":
-    test_connect_and_receive()
-
