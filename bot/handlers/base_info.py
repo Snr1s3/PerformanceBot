@@ -1,4 +1,12 @@
 from bot.socket.socket_con import SocketCon
+from bot.info_handlers.cpu_info import CpuInfo
+from bot.info_handlers.disk_info import DiskInfo
+from bot.info_handlers.docker_info import DockerInfo
+from bot.info_handlers.memory_info import MemoryInfo
+from bot.info_handlers.network_info import NetworkInfo
+from bot.info_handlers.sensors_info import SensorsInfo
+from bot.info_handlers.system_info import SystemInfo
+
 
 
 class BaseInfo:
@@ -7,16 +15,16 @@ class BaseInfo:
         self.sock.connect()
 
     def system(self):
-        return self.sock.systeminfo()
+        return SystemInfo(self.sock).fetch()
     def cpu(self):
-        return self.sock.cpuinfo()
+        return CpuInfo(self.sock).fetch()
     def docker(self):
-        return self.sock.dockerinfo()
+        return DockerInfo(self.sock).fetch()
     def memory(self):
-        return self.sock.memoryinfo()
+        return MemoryInfo(self.sock).fetch()
     def sensors(self):
-        return self.sock.sensorsinfo()
+        return SensorsInfo(self.sock).fetch()
     def disk(self):
-        return self.sock.diskinfo()
+        return DiskInfo(self.sock).fetch()
     def network(self):
-        return self.sock.networkinfo()
+        return NetworkInfo(self.sock).fetch()

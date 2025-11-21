@@ -1,11 +1,11 @@
 # PerformanceBot
 
-PerformanceBot is a Telegram bot and dashboard for monitoring system performance metrics in real time.
+PerformanceBot is a Telegram bot for monitoring system performance metrics in real time.
 
 ## Features
 
 - View system information (OS, kernel, uptime, users)
-- Monitor CPU usage and per-core stats
+- Monitor CPU usage and per-core stats 
 - Check memory usage
 - Display disk usage and partitions
 - Show network statistics and interfaces
@@ -33,6 +33,6 @@ PerformanceBot is a Telegram bot and dashboard for monitoring system performance
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/PerformanceDashboard.git
+   git clone https://github.com/Snr1s3/PerformanceBot.git
    cd PerformanceDashboard
    ```
