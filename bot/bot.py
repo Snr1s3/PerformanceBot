@@ -1,0 +1,18 @@
+import logging
+from telegram import Update
+from telegram.ext import ApplicationBuilder, PicklePersistence
+from bot.config import BOT_TOKEN2
+from bot.handlers import setup_handlers
+
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO
+)
+
+def main() -> None:
+    app = ApplicationBuilder().token(BOT_TOKEN2).build()
+    setup_handlers(app)
+    app.run_polling()
+
+if __name__ == "__main__":
+    main()
