@@ -1,3 +1,4 @@
+import os
 import websocket
 import json
 
@@ -13,7 +14,7 @@ class SocketCon:
     def __init__(self):
         self.ws = None
 
-    def connect(self, url="ws://localhost:8000/ws"):
+    def connect(self, url=os.getenv("WEB_SOCKET", "")):
         if self.ws is None:
             self.ws = websocket.WebSocket()
             try:

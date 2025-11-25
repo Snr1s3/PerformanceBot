@@ -1,6 +1,6 @@
 import logging
 from telegram.ext import ApplicationBuilder
-from bot.config import BOT_TOKEN2
+from bot.config import BOT_TOKEN
 from bot.handlers import setup_handlers
 
 logging.basicConfig(
@@ -9,7 +9,7 @@ logging.basicConfig(
 )
 
 def main() -> None:
-    app = ApplicationBuilder().token(BOT_TOKEN2).build()
+    app = ApplicationBuilder().token(BOT_TOKEN).build()
     setup_handlers(app)
     app.run_polling()
 

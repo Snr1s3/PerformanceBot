@@ -12,19 +12,19 @@ source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# Create backend run script
+# Create backend run script  "ws://localhost:8000/ws"
 cat <<EOF > backend/run_backend.sh
 #!/bin/bash
-source venv/bin/activate
-sudo venv/bin/uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
+source ../venv/bin/activate
+sudo ../venv/bin/uvicorn main:app --host 127.0.0.1 --port 8000 --reload
 EOF
 chmod +x backend/run_backend.sh
 
 # Create bot run script
 cat <<EOF > bot/run_bot.sh
 #!/bin/bash
-source venv/bin/activate
-python -m bot.bot
+source ../venv/bin/activate
+python -m bot
 EOF
 chmod +x bot/run_bot.sh
 
