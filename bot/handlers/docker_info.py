@@ -1,3 +1,4 @@
+import html
 from telegram import Update
 from telegram.ext import ContextTypes
 from .base_info import BaseInfo
@@ -5,5 +6,6 @@ from .base_info import BaseInfo
 class DockerHandler(BaseInfo):
     async def docker_Handler(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         content = self.docker()
-        msg = "<b>DOCKER INFO:</b>\n" + "\n".join(content)
+        safe_content = [html.escape(line) for line in content]
+        msg = "<b>DOCKER INFO:</b>\n" + "\n".join(safe_content)
         await update.message.reply_text(msg, parse_mode="HTML")
