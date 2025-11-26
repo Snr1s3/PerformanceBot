@@ -31,8 +31,27 @@ PerformanceBot is a Telegram bot for monitoring system performance metrics in re
 
 ## Setup
 
-1. Clone the repository:
+1. Clone the repository && Run the setup:
    ```bash
    git clone https://github.com/Snr1s3/PerformanceBot.git
    cd PerformanceDashboard
+   bash setup.sh
    ```
+2. Run the backend:
+   ```bash
+   bash backend/run_backend.sh
+   ```
+3. Configurate environment variables named BOT_TOKEN and WEB_SOCKET_URL
+   ```bash
+   # Add this lines in the ~/.bashrc
+   BOT_TOKEN="REPLACE WITH YOUR TOKEN"
+   WEB_SOCKET_URL="REPLACE WITH YOUR URL"
+   ```
+4. Run the bot:
+   ```bash
+   # Run the bot locally
+   bash bot/run_bot.sh
+   # Or run the bot as a Docker container (recommended for cloud hosting the bot and having the backend on a different server)
+   sudo docker run --name bot -e WEB_SOCKET=$WEB_SOCKET_URL -e BOT_TOKEN=$BOT_TOKEN performance-bot
+
+
