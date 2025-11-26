@@ -1,4 +1,5 @@
 from backend_socket.socket_con import SocketCon
+from info_handlers.capture_info import CaptureInfo
 from info_handlers.cpu_info import CpuInfo
 from info_handlers.disk_info import DiskInfo
 from info_handlers.docker_info import DockerInfo
@@ -28,3 +29,5 @@ class BaseInfo:
         return DiskInfo(self.sock).fetch()
     def network(self):
         return NetworkInfo(self.sock).fetch()
+    def capture(self):
+        return CaptureInfo(self.sock).fetch()

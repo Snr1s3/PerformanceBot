@@ -1,5 +1,6 @@
 from telegram.ext import CommandHandler, MessageHandler, filters
 
+from .capture import CaptureHandler
 from .all_info import AllHandler
 from .docker_info import DockerHandler
 from .network_info import NetworkHandler
@@ -20,6 +21,7 @@ def setup_handlers(app):
     cpu_Handler = CpuHandler()
     memory_Handler = MemoryHandler()
     disk_Handler = DiskHandler()
+    capture_Handler = CaptureHandler()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("system", system_Handler.system_Handler))
@@ -31,4 +33,5 @@ def setup_handlers(app):
     app.add_handler(CommandHandler("sensors", sensors_Handler.sensors_Handler))
     app.add_handler(CommandHandler("all", all_Handler.all_Handler))
     app.add_handler(CommandHandler("help", help_command))
+    app.add_handler(CommandHandler("capture",capture_Handler.capture_Handler))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, help_command))

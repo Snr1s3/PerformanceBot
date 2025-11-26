@@ -13,6 +13,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         "/docker - Show docker info\n"
         "/sensors - Show sensors info\n"
         "/all - Show all info\n"
+        "/capture - Sends a json with all the data\n"
         "/help - Show this help message"
     )
     await update.message.reply_text(msg, parse_mode="HTML")

@@ -9,8 +9,11 @@ class InfoBase:
         arr = []
         try:
             data = json.loads(content)
-            info = data.get(section, {})
-            arr = formatter(info)
+            if section:
+                info = data.get(section, {})
+                arr = formatter(info)
+            else:
+                return data
         except Exception as e:
             print("Error parsing JSON:", e)
             print("Raw content:", content)
