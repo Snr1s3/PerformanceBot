@@ -20,24 +20,6 @@ async def system_monitor():
     print("System monitor started...")
     while True:
         try:
-            frequency_cores_json = []
-            i = 0 
-            for core in psutil.cpu_freq(percpu=True):
-                
-                frequency_core = {
-                    f"core{i}" : round(core.current, 3),
-                }
-                frequency_cores_json.append(frequency_core)
-                i = i + 1
-            cores_json = []
-            i = 0 
-            for core in psutil.cpu_percent(percpu=True):
-
-                core_info = {
-                    f"core{i}" : core,
-                }
-                cores_json.append(core_info)
-                i = i + 1
             disks_json = []
             for disk in psutil.disk_partitions(all=False):
                 try:
@@ -242,8 +224,6 @@ async def system_monitor():
                         "threads_count": psutil.cpu_count(),
                         "cpu": round(psutil.cpu_percent(), 1),
                         "frequency": round(psutil.cpu_freq().current, 1),
-                        "cpu_core": cores_json,
-                        "frequency_core": frequency_cores_json,
                     },
                     "memory": {
                         "ram_total": round(psutil.virtual_memory().total / (1024**3), 2),
