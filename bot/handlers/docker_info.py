@@ -8,4 +8,4 @@ class DockerHandler(BaseInfo):
         content = self.docker()
         safe_content = [html.escape(line) for line in content]
         msg = "<b>DOCKER INFO:</b>\n" + "\n".join(safe_content)
-        await update.message.reply_text(msg, parse_mode="HTML")
+        await self.send_long_message(msg, update, parse_mode="HTML")

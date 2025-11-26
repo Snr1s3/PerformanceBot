@@ -6,4 +6,4 @@ class SystemHandler(BaseInfo):
     async def system_Handler(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         content = self.system()
         msg = "<b>SYSTEM INFO:</b>\n" + "\n".join(content)
-        await update.message.reply_text(msg, parse_mode="HTML")
+        await self.send_long_message(msg, update, parse_mode="HTML")

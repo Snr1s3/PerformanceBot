@@ -15,7 +15,7 @@ from handlers.system_info import SystemHandler
 class AllHandler(BaseInfo):
     async def all_Handler(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         msg = "<b>All System Info:</b>\n"
-        await update.message.reply_text(msg, parse_mode="HTML")
+        await self.send_long_message(msg, update, parse_mode="HTML")
 
         handlers_methods = [
             (SystemHandler(), "system_Handler"),
@@ -30,6 +30,6 @@ class AllHandler(BaseInfo):
         for handler, method_name in handlers_methods:
             method = getattr(handler, method_name, None)
             if method:
-                text = await method(update, context)
-                if text: 
-                    await update.message.reply_text(text, parse_mode="HTML")
+                msg = await method(update, context)
+                if msg: 
+                    await self.send_long_message(msg, update, parse_mode="HTML")

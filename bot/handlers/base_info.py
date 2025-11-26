@@ -11,9 +11,15 @@ from info_handlers.system_info import SystemInfo
 
 
 class BaseInfo:
+    MAX_LEN = 4096
+
     def __init__(self):
         self.sock = SocketCon()
         self.sock.connect()
+    
+    async def send_long_message(self, message, update, **kwargs):
+        for i in range(0, len(message), self.MAX_LEN):
+            await update.message.reply_text(message[i:i+self.MAX_LEN], **kwargs)
 
     def system(self):
         return SystemInfo(self.sock).fetch()

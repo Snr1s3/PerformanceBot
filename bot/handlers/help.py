@@ -1,5 +1,6 @@
 from telegram import Update
 from telegram.ext import ContextTypes
+from .base_info import BaseInfo
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     msg = (
@@ -16,4 +17,4 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         "/capture - Sends a json with all the data\n"
         "/help - Show this help message"
     )
-    await update.message.reply_text(msg, parse_mode="HTML")
+    await BaseInfo.send_long_message(msg, update, parse_mode="HTML")
