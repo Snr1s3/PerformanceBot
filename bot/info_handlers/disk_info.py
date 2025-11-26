@@ -13,4 +13,4 @@ class DiskInfo(InfoBase):
                 else:
                     arr.append(f"{key_upper} : {value}")
             return arr
-        return self.get_info("disk", formatter)
+        return self.get_info("disks", formatter)

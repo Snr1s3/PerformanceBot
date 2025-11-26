@@ -1,14 +1,14 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from bot.handlers.base_info import BaseInfo
-from bot.handlers.cpu_info import CpuHandler
-from bot.handlers.disk_info import DiskHandler
-from bot.handlers.docker_info import DockerHandler
-from bot.handlers.memory_info import MemoryHandler
-from bot.handlers.network_info import NetworkHandler
-from bot.handlers.sensors_info import SensorsHandler
-from bot.handlers.system_info import SystemHandler
+from .base_info import BaseInfo
+from handlers.cpu_info import CpuHandler
+from handlers.disk_info import DiskHandler
+from handlers.docker_info import DockerHandler
+from handlers.memory_info import MemoryHandler
+from handlers.network_info import NetworkHandler
+from handlers.sensors_info import SensorsHandler
+from handlers.system_info import SystemHandler
 
 
 

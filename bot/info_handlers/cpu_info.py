@@ -2,6 +2,7 @@ from .info_base import InfoBase
 
 class CpuInfo(InfoBase):
     def fetch(self):
+        
         def formatter(info):
             arr = []
             for key, value in info.items():

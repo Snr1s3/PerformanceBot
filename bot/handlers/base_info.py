@@ -1,11 +1,11 @@
-from bot.socket.socket_con import SocketCon
-from bot.info_handlers.cpu_info import CpuInfo
-from bot.info_handlers.disk_info import DiskInfo
-from bot.info_handlers.docker_info import DockerInfo
-from bot.info_handlers.memory_info import MemoryInfo
-from bot.info_handlers.network_info import NetworkInfo
-from bot.info_handlers.sensors_info import SensorsInfo
-from bot.info_handlers.system_info import SystemInfo
+from backend_socket.socket_con import SocketCon
+from info_handlers.cpu_info import CpuInfo
+from info_handlers.disk_info import DiskInfo
+from info_handlers.docker_info import DockerInfo
+from info_handlers.memory_info import MemoryInfo
+from info_handlers.network_info import NetworkInfo
+from info_handlers.sensors_info import SensorsInfo
+from info_handlers.system_info import SystemInfo
 
 
 

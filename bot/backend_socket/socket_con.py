@@ -1,6 +1,5 @@
 import os
 import websocket
-import json
 
 class SocketCon:
     _instance = None
