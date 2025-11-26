@@ -11,5 +11,5 @@ class CaptureInfo(InfoBase):
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"jsons/data_{timestamp}.json"
         with open(filename, 'w') as f:
-            json.dump(self.get_info(None, formatter), f)
+            json.dump(self.get_info(None, formatter), f, indent=2)
         return filename
