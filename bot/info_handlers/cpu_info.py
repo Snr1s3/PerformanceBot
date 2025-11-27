@@ -10,7 +10,7 @@ class CpuInfo(InfoBase):
                 if key_upper == "CPU":
                     value = str(value) + " %"
                 elif key_upper == "FREQUENCY":
-                    value = str(value) + " GHz"
+                    value = str(value) + " MHz"
                 if key_upper not in ("CPU_CORE", "FREQUENCY_CORE"):
                     arr.append(f"{key_upper} : {value}")
             return arr
