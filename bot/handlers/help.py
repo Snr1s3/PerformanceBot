@@ -17,4 +17,4 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         "/capture - Sends a json with all the data\n"
         "/help - Show this help message"
     )
-    await BaseInfo.send_long_message(msg, update, parse_mode="HTML")
+    await update.message.reply_text(msg, parse_mode="HTML")
