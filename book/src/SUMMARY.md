@@ -6,3 +6,5 @@
         - [WebSocket Imports](./websocket_imports.md)
         - [Create WebSocket](./websocket_create.md)
     - [Telegram Bot Documentation](./bot.md)
+        - [Bot Imports](./bot_imports.md)
+        - [Create Bot](./bot_create.md)

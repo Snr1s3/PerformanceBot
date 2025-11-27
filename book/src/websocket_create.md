@@ -101,41 +101,55 @@ Finally, gather system and Docker stats and send them as JSON.
     
     # ... previous setup ...
 ```
-## Output
+---
+## How to Run the Backend
+Follow these steps to start the FastAPI backend server:
+```bash
+    # Install dependencies
+    pip install -r requirements.txt
+
+    # Change directory to the backend
+    cd backend
+    
+    # Run the backend 
+    uvicorn main:app --reload
+```
+---
+## WebSocket Output
 ```json
 {
-  "cpu": {
-    "cores_count": 4,
-    "threads_count": 8,
-    "cpu": 4.5,
-    "frequency": 2611.2
-  },
-  "memory": {
-    "ram_total": 7.61,
-    "ram_available": 4.94,
-    "ram_percent": 35.1
-  },
-  "docker": {
-    "containers": [
-      {
-        "container0": {
-          "id": "970b24a9730e",
-          "name": "bot2",
-          "status": "exited",
-          "image": "performance-bot:latest",
-          "created": "2025-11-26T14:18:18"
-        }
-      },
-      {
-        "container1": {
-          "id": "900d303cb952",
-          "name": "bot",
-          "status": "exited",
-          "image": "snr1s3/performance-bot:latest",
-          "created": "2025-11-26T10:53:37"
-        }
-      }
-    ]
-  }
+    "cpu": {
+        "cores_count": 4,
+        "threads_count": 8,
+        "cpu": 4.5,
+        "frequency": 2611.2
+    },
+    "memory": {
+        "ram_total": 7.61,
+        "ram_available": 4.94,
+        "ram_percent": 35.1
+    },
+    "docker": {
+        "containers": [
+            {
+                "container0": {
+                "id": "970b24a9730e",
+                "name": "bot2",
+                "status": "exited",
+                "image": "performance-bot:latest",
+                "created": "2025-11-26T14:18:18"
+                }
+            },
+            {
+                "container1": {
+                "id": "900d303cb952",
+                "name": "bot",
+                "status": "exited",
+                "image": "snr1s3/performance-bot:latest",
+                "created": "2025-11-26T10:53:37"
+                }
+            }
+        ]
+    }
 }
 ```
