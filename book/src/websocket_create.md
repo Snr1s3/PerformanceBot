@@ -37,7 +37,7 @@ Start by creating a FastAPI app and enabling CORS for local frontend development
         uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
 ```
 ---
-## Second Step
+## Step 2: Accept WebSocket Connections
 Now, accept WebSocket connections and send a simple message.
 ```python
     # ... previous setup ...
@@ -51,7 +51,7 @@ Now, accept WebSocket connections and send a simple message.
     # ... previous setup ...
 ```
 ---
-## Final Step
+## Step 3: Send System and Docker Stats
 Finally, gather system and Docker stats and send them as JSON.
 ```python
     import psutil
