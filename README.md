@@ -2,7 +2,7 @@
 
 PerformanceBot is a Telegram bot for monitoring system performance metrics in real time.   
 
-[![Docs](https://img.shields.io/badge/Docs-snr1s3%2Fperformance--bot-blue?logo=md)](https://hub.docker.com/repository/docker/snr1s3/performance-bot/general)
+[![Docs](https://img.shields.io/badge/Docs-snr1s3%2Fperformance--bot-blue?logo=md)](https://snr1s3.github.io/PerformanceBot)           
 [![Docker Hub](https://img.shields.io/badge/dockerhub-snr1s3%2Fperformance--bot-blue?logo=docker)](https://hub.docker.com/repository/docker/snr1s3/performance-bot/general)
 
 ## Features
