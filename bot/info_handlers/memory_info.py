@@ -7,11 +7,11 @@ class MemoryInfo(InfoBase):
             for key, value in info.items():
                 key_upper = key.upper()
                 if key_upper == "RAM_TOTAL":
-                    value = str(value) + " GB"
+                    value = str(value) + "GB"
                 elif key_upper == "RAM_AVAILABLE":
-                    value = str(value) + " GB"
+                    value = str(value) + "GB"
                 elif key_upper == "RAM_PERCENT":
-                    value = str(value) + " %"
-                arr.append(f"{key_upper} : {value}")
+                    value = str(value) + "%"
+                arr.append(f"{key_upper}: {value}")
             return arr
         return self.get_info("memory", formatter)

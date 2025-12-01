@@ -7,7 +7,7 @@ from info_handlers.memory_info import MemoryInfo
 from info_handlers.network_info import NetworkInfo
 from info_handlers.sensors_info import SensorsInfo
 from info_handlers.system_info import SystemInfo
-
+import html
 
 
 class BaseInfo:
@@ -22,18 +22,19 @@ class BaseInfo:
             await update.message.reply_text(message[i:i+self.MAX_LEN], **kwargs)
 
     def system(self):
-        return SystemInfo(self.sock).fetch()
+        return "<b>SYSTEM INFO:</b>\n" + "\n".join(SystemInfo(self.sock).fetch())
     def cpu(self):
-        return CpuInfo(self.sock).fetch()
+        return "<b>CPU INFO:</b>\n" + "\n".join(CpuInfo(self.sock).fetch())
     def docker(self):
-        return DockerInfo(self.sock).fetch()
+        safe_content = [html.escape(line) for line in DockerInfo(self.sock).fetch()]
+        return "<b>DOCKER INFO:</b>\n" + "\n".join(safe_content)
     def memory(self):
-        return MemoryInfo(self.sock).fetch()
+        return "<b>MEMORY INFO:</b>\n" + "\n".join(MemoryInfo(self.sock).fetch())
     def sensors(self):
-        return SensorsInfo(self.sock).fetch()
+        return "<b>Sensors INFO:</b>\n" + "\n".join(SensorsInfo(self.sock).fetch())
     def disk(self):
-        return DiskInfo(self.sock).fetch()
+        return "<b>DISK INFO:</b>\n" + "\n".join(DiskInfo(self.sock).fetch())
     def network(self):
-        return NetworkInfo(self.sock).fetch()
+        return  "<b>NETWORK INFO:</b>\n" + "\n".join(NetworkInfo(self.sock).fetch())
     def capture(self):
         return CaptureInfo(self.sock).fetch()

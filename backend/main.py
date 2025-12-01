@@ -310,9 +310,7 @@ async def websocket_endpoint(websocket: WebSocket):
 @app.get("/")
 def read_root():
     return {
-        "message": "Performance Dashboard API Running",
-        "connected_clients": len(connected_clients),
-        "has_data": len(latest_data) > 0
+        "message": "Performance Dashboard API is running."
     }
 
 if __name__ == "__main__":

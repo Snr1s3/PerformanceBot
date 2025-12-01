@@ -16,3 +16,4 @@ websockets==15.0.1
 python-telegram-bot==20.0
 python-dotenv==0.19.2
 websocket-client
+pytest

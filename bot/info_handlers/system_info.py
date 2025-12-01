@@ -9,7 +9,7 @@ class SystemInfo(InfoBase):
                 if key_upper == "USERS" and isinstance(v, list):
                     for user in v:
                         user_str = "\n  ".join(f"{k.upper()}: {v}" for k, v in user.items())
-                        arr.append(f"{user_str}\n")
+                        arr.append(f"{user_str}")
                 else:
                     arr.append(f"{key_upper}: {v}")
             return arr

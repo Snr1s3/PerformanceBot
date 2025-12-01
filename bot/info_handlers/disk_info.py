@@ -4,13 +4,14 @@ class DiskInfo(InfoBase):
     def fetch(self):
         def formatter(info):
             arr = []
-            for key, value in info.items():
-                key_upper = key.upper()
-                if key_upper == "DISK" and isinstance(value, list):
-                    for disk in value:
-                        disk_str = "\n  ".join(f"{k.upper()}: {v}" for k, v in disk.items())
-                        arr.append(f"{disk_str}\n")
-                else:
-                    arr.append(f"{key_upper} : {value}")
+            disks = info.get("disk", [])
+            for disk in disks:
+                for key, value in disk.items():
+                    key_upper = key.upper()
+                    if key_upper in ("TOTAL_GB", "USED_GB", "FREE_GB"):
+                        value = f"{value}GB"
+                    if key_upper == "PERCENT":
+                        value = f"{value}%\n"
+                    arr.append(f"  {key_upper}: {value}")
             return arr
         return self.get_info("disks", formatter)

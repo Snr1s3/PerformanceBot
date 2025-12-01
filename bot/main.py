@@ -13,5 +13,8 @@ def main() -> None:
     setup_handlers(app)
     app.run_polling()
 
+def tests():
+    return "hola"
+
 if __name__ == "__main__":
     main()
