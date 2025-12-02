@@ -3,17 +3,17 @@ from .info_base import InfoBase
 
 
 class DiskInfo(InfoBase):
-    def fetch(self):
-        def formatter(info):
-            arr = []
+    def fetch(self) -> List[str]:
+        def formatter(info: Dict[str, Any]) -> List[str]:
+            arr: List[str] = []
             disks = info.get("disk", [])
             for disk in disks:
-                for key, value in disk.items():
-                    key_upper = key.upper()
-                    if key_upper in ("TOTAL_GB", "USED_GB", "FREE_GB"):
-                        value = f"{value}GB"
-                    if key_upper == "PERCENT":
-                        value = f"{value}%\n"
-                    arr.append(f"  {key_upper}: {value}")
+                arr.append("  DEVICE: " + str(disk.get("device", "")))
+                arr.append("  MOUNTPOINT: " + str(disk.get("mountpoint", "")))
+                arr.append("  FSTYPE: " + str(disk.get("fstype", "")))
+                arr.append("  TOTAL_GB: " + str(disk.get("total_gb", "")) + "GB")
+                arr.append("  USED_GB: " + str(disk.get("used_gb", "")) + "GB")
+                arr.append("  FREE_GB: " + str(disk.get("free_gb", "")) + "GB")
+                arr.append("  PERCENT: " + str(disk.get("percent", "")) + "%\n")
             return arr
         return self.get_info("disks", formatter)
