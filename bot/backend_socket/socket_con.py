@@ -3,6 +3,7 @@ import websocket
 import json
 from logger import logger
 
+
 class SocketCon:
     _instance = None
     _ws = None
