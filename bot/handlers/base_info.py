@@ -20,7 +20,7 @@ class BaseInfo:
     async def send_long_message(self, message, update, **kwargs):
         for i in range(0, len(message), self.MAX_LEN):
             await update.message.reply_text(
-                message[i:i+self.MAX_LEN], **kwargs
+                message[i:i + self.MAX_LEN], **kwargs
             )
 
     def system(self):

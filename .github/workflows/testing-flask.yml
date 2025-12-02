@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -18,7 +20,16 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install flake8
+          pip install flake8 autopep8
+      - name: Auto-format code
+        run: autopep8 --in-place --aggressive --aggressive --recursive .
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --cached --quiet || git commit -m "Auto-format code with autopep8"
+          git push
       - name: Lint code
         run: flake8 .
       - name: Run tests
