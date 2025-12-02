@@ -32,7 +32,9 @@ async def system_monitor():
                         "total_gb": round(usage.total / (1024**3), 2),
                         "used_gb": round(usage.used / (1024**3), 2),
                         "free_gb": round(usage.free / (1024**3), 2),
-                        "percent": round((usage.used / usage.total) * 100, 1)
+                        "percent": round(
+                            (usage.used / usage.total) * 100, 1
+                        )
                     }
                     disks_json.append(disk_info)
                 except PermissionError:
@@ -43,7 +45,9 @@ async def system_monitor():
                     "name": user.name,
                     "terminal": user.terminal if user.terminal else "None",
                     "host": user.host if user.host else "localhost",
-                    "started": datetime.datetime.fromtimestamp(user.started).strftime("%Y-%m-%d %H:%M:%S"),
+                    "started": datetime.datetime.fromtimestamp(
+                        user.started
+                    ).strftime("%Y-%m-%d %H:%M:%S"),
                     "pid": user.pid if user.pid else "None"
                 }
                 users_json.append(users_info)
@@ -56,7 +60,8 @@ async def system_monitor():
                         for fan in fans:
                             fan_info = {
                                 "label": fan.label if fan.label else "unknown",
-                                "current_rpm": int(fan.current) if fan.current else 0
+                                "current_rpm": int(fan.current)
+                                if fan.current else 0
                             }
                             fans_json[device_name].append(fan_info)
             except (AttributeError, OSError):
@@ -71,19 +76,27 @@ async def system_monitor():
                             temp_info = {
                                 "label": temp.label if temp.label else "unknown",
                                 "current": round(temp.current, 1),
-                                "high": round(temp.high, 1) if temp.high else None,
-                                "critical": round(temp.critical, 1) if temp.critical else None
+                                "high": round(temp.high, 1)
+                                if temp.high else None,
+                                "critical": round(temp.critical, 1)
+                                if temp.critical else None
                             }
                             temperatures_json[device_name].append(temp_info)
             except (AttributeError, OSError):
-                temperatures_json = {"info": "No temperature data available"}
+                temperatures_json = {
+                    "info": "No temperature data available"
+                }
             battery_json = {}
             try:
                 battery = psutil.sensors_battery()
                 if battery:
                     battery_json = {
                         "percent": round(battery.percent, 1),
-                        "secsleft": battery.secsleft if battery.secsleft != -1 else "unlimited",
+                        "secsleft": (
+                            battery.secsleft
+                            if battery.secsleft != -1
+                            else "unlimited"
+                        ),
                         "power_plugged": battery.power_plugged
                     }
                 else:
@@ -125,23 +138,30 @@ async def system_monitor():
                 for interface_name, stats in net_if_stats.items():
                     net_if_stats_json[interface_name] = {
                         "isup": stats.isup,
-                        "duplex": stats.duplex.name
-                        if hasattr(stats.duplex, 'name')
-                        else str(stats.duplex),
+                        "duplex": (
+                            stats.duplex.name
+                            if hasattr(stats.duplex, 'name')
+                            else str(stats.duplex)
+                        ),
                         "speed": stats.speed,
                         "mtu": stats.mtu,
                         "flags": stats.flags
                     }
             except (AttributeError, OSError):
                 net_if_stats_json = {
-                    "info": "Network interface stats not available"}
+                    "info": "Network interface stats not available"
+                }
             nic_addrs_json = {}
             try:
                 for interface_name, addresses in psutil.net_if_addrs().items():
                     nic_addrs_json[interface_name] = []
                     for addr in addresses:
                         addr_info = {
-                            "family": addr.family.name if hasattr(addr.family, 'name') else str(addr.family),
+                            "family": (
+                                addr.family.name
+                                if hasattr(addr.family, 'name')
+                                else str(addr.family)
+                            ),
                             "address": addr.address,
                             "netmask": addr.netmask,
                             "broadcast": addr.broadcast
@@ -149,27 +169,40 @@ async def system_monitor():
                         nic_addrs_json[interface_name].append(addr_info)
             except (AttributeError, OSError):
                 nic_addrs_json = {
-                    "info": "Network interface addresses not available"}
+                    "info": "Network interface addresses not available"
+                }
             merged_interfaces = {}
             all_interfaces = set()
-            if isinstance(net_if_stats_json, dict) and "info" not in net_if_stats_json:
+            if (
+                isinstance(net_if_stats_json, dict)
+                and "info" not in net_if_stats_json
+            ):
                 all_interfaces.update(net_if_stats_json.keys())
-            if isinstance(nic_addrs_json, dict) and "info" not in nic_addrs_json:
+            if (
+                isinstance(nic_addrs_json, dict)
+                and "info" not in nic_addrs_json
+            ):
                 all_interfaces.update(nic_addrs_json.keys())
             for interface_name in all_interfaces:
                 merged_interfaces[interface_name] = {}
 
                 if interface_name in net_if_stats_json:
-                    merged_interfaces[interface_name]["stats"] = net_if_stats_json[interface_name]
+                    merged_interfaces[interface_name]["stats"] = (
+                        net_if_stats_json[interface_name]
+                    )
                 else:
                     merged_interfaces[interface_name]["stats"] = {
-                        "info": "Stats not available"}
+                        "info": "Stats not available"
+                    }
 
                 if interface_name in nic_addrs_json:
-                    merged_interfaces[interface_name]["addresses"] = nic_addrs_json[interface_name]
+                    merged_interfaces[interface_name]["addresses"] = (
+                        nic_addrs_json[interface_name]
+                    )
                 else:
                     merged_interfaces[interface_name]["addresses"] = [
-                        {"info": "Addresses not available"}]
+                        {"info": "Addresses not available"}
+                    ]
 
             docker_images = []
             i = 0
@@ -178,8 +211,14 @@ async def system_monitor():
                     img_data = {
                         "id": img.id[:19] if img.id else "unknown",
                         "tags": img.tags if img.tags else ["<none>"],
-                        "size_mb": round(img.attrs.get('Size', 0) / (1024 * 1024), 2),
-                        "created": img.attrs.get('Created', '')[:19] if img.attrs.get('Created') else 'unknown'
+                        "size_mb": round(
+                            img.attrs.get('Size', 0) / (1024 * 1024), 2
+                        ),
+                        "created": (
+                            img.attrs.get('Created', '')[:19]
+                            if img.attrs.get('Created')
+                            else 'unknown'
+                        )
                     }
                     image_info = {
                         f"image{i}": img_data
@@ -195,15 +234,26 @@ async def system_monitor():
             for container in docker_client.containers.list(all=True):
                 try:
                     container_data = {
-                        "id": container.id[:12] if container.id else "unknown",
-                        "name": container.name if container.name else "unknown",
-                        "status": container.status if container.status else "unknown",
-                        "image": container.image.tags[0]
-                        if container.image.tags
-                        else (
-                            container.image.id[:12]
-                            if container.image.id
-                            else "unknown"
+                        "id": (
+                            container.id[:12]
+                            if container.id else "unknown"
+                        ),
+                        "name": (
+                            container.name
+                            if container.name else "unknown"
+                        ),
+                        "status": (
+                            container.status
+                            if container.status else "unknown"
+                        ),
+                        "image": (
+                            container.image.tags[0]
+                            if container.image.tags
+                            else (
+                                container.image.id[:12]
+                                if container.image.id
+                                else "unknown"
+                            )
                         ),
                         "created": (
                             container.attrs.get('Created', '')[:19]
@@ -232,11 +282,11 @@ async def system_monitor():
                         "version": platform.version(),
                         "machine": platform.machine(),
                         "boottime": datetime.datetime.fromtimestamp(
-                        psutil.boot_time()
-                    ).strftime("%Y-%m-%d %H:%M:%S"),
+                            psutil.boot_time()
+                        ).strftime("%Y-%m-%d %H:%M:%S"),
                         "uptime_seconds": int(
-                        time.time() - psutil.boot_time()
-                    ),
+                            time.time() - psutil.boot_time()
+                        ),
                         "users_count": len(users_json),
                         "users": users_json,
                     },
@@ -248,14 +298,14 @@ async def system_monitor():
                     },
                     "memory": {
                         "ram_total": round(
-                        psutil.virtual_memory().total / (1024**3), 2
-                    ),
+                            psutil.virtual_memory().total / (1024**3), 2
+                        ),
                         "ram_available": round(
-                        psutil.virtual_memory().available / (1024**3), 2
-                    ),
+                            psutil.virtual_memory().available / (1024**3), 2
+                        ),
                         "ram_percent": round(
-                        psutil.virtual_memory().percent, 1
-                    ),
+                            psutil.virtual_memory().percent, 1
+                        ),
                     },
                     "disks": {
                         "disk": disks_json,
