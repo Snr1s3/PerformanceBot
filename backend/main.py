@@ -73,8 +73,13 @@ async def system_monitor():
                     for device_name, temps in temp_data.items():
                         temperatures_json[device_name] = []
                         for temp in temps:
+                            label = None
+                            if temp.label:
+                                label = temp.label
+                            else:
+                                label = "unknown"
                             temp_info = {
-                                "label": temp.label if temp.label else "unknown",
+                                "label": label,
                                 "current": round(temp.current, 1),
                                 "high": round(temp.high, 1)
                                 if temp.high else None,
