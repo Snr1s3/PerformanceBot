@@ -11,9 +11,11 @@ class DiskInfo(InfoBase):
                 arr.append("  DEVICE: " + str(disk.get("device", "")))
                 arr.append("  MOUNTPOINT: " + str(disk.get("mountpoint", "")))
                 arr.append("  FSTYPE: " + str(disk.get("fstype", "")))
-                arr.append("  TOTAL_GB: " + str(disk.get("total_gb", "")) + "GB")
+                arr.append("  TOTAL_GB: " +
+                           str(disk.get("total_gb", "")) + "GB")
                 arr.append("  USED_GB: " + str(disk.get("used_gb", "")) + "GB")
                 arr.append("  FREE_GB: " + str(disk.get("free_gb", "")) + "GB")
-                arr.append("  PERCENT: " + str(disk.get("percent", "")) + "%\n")
+                arr.append("  PERCENT: " +
+                           str(disk.get("percent", "")) + "%\n")
             return arr
         return self.get_info("disks", formatter)
