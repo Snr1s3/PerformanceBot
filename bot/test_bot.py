@@ -37,18 +37,22 @@ class TestBot:
     def test_sensors(self):
         base_info = BaseInfo()
         sensors = base_info.sensors()
-        # Replace the expected string below with the actual expected output for sensors
-        assert sensors == "<b>SENSORS INFO:</b>\nBATTERY_PERCENT: 100.0%\nPOWER_PLUGGED: True"
-"""
+        assert sensors == "<b>Sensors INFO:</b>\nBATTERY:\n  percent: 100%\n  secsleft: -2\n  power_plugged: True\nFANS:\n  fan1:\n    label: CPU Fan\n    current_rpm: 2200 RPM\nTEMPERATURES:\n  coretemp:\n    label: Core 0\n    current: 45.0°C\n    high: 100.0°C\n    critical: 105.0°C\n  acpitz:\n    label: TZ0\n    current: 27.8°C\n    high: 128.0°C\n    critical: 128.0°C"
+
     def test_capture(self):
         base_info = BaseInfo()
         capture = base_info.capture()
-        # Replace the expected string below with the actual expected output for capture
-        assert capture == "<b>CAPTURE INFO:</b>\n..."
+        with open(capture) as f1, open('jsons/TEST.json') as f2:
+            obj1 = json.load(f1)
+            obj2 = json.load(f2)
+        result = None
+        if obj1 == obj2:
+            result = True
+        else:
+            result = False
+        assert result == True
 
     def test_network(self):
         base_info = BaseInfo()
         network = base_info.network()
-        # Replace the expected string below with the actual expected output for network
-        assert network == "<b>NETWORK INFO:</b>\n..."
-"""
+        assert network == "<b>NETWORK INFO:</b>\nIO COUNTERS:\n  TOTAL:\n    bytes_sent: 597009252\n    bytes_recv: 588188535\n    packets_sent: 421337\n    packets_recv: 457500\n    errin: 0\n    errout: 0\n    dropin: 0\n    dropout: 0\n  PER INTERFACE:\n    eth0:\n      bytes_sent: 43977648\n      bytes_recv: 59787387\n      packets_sent: 45817\n      packets_recv: 83730\n      errin: 0\n      errout: 0\n      dropin: 0\n      dropout: 0\nINTERFACES:\n  eth0:\n    STATS:\n      isup: True\n      duplex: NIC_DUPLEX_FULL\n      speed: 10000\n      mtu: 1500\n      flags: up,broadcast,running,multicast\n    ADDRESSES:\n      family: AF_INET\n       address: 172.21.88.59\n       netmask: 255.255.240.0\n       broadcast: 172.21.95.255\n      family: AF_INET6\n       address: fe80::215:5dff:fe48:e385%eth0\n       netmask: ffff:ffff:ffff:ffff::\n       broadcast: None\n      family: AF_PACKET\n       address: 00:15:5d:48:e3:85\n       netmask: None\n       broadcast: ff:ff:ff:ff:ff:ff"

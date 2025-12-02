@@ -3,15 +3,38 @@ from .info_base import InfoBase
 class SensorsInfo(InfoBase):
     def fetch(self):
         def formatter(info):
+            def add_unit(k, v):
+                if "temp" in k.lower() or k.lower() in {"current", "high", "critical"}:
+                    return f"{k}: {v}°C"
+                if "fan" in k.lower() or k.lower() == "current_rpm":
+                    return f"{k}: {v} RPM"
+                if "percent" in k.lower() or k.lower() == "percent":
+                    return f"{k}: {int(v)}%"
+                return f"{k}: {v}"
+
             arr = []
             for key, value in info.items():
                 key_upper = key.upper()
-                if isinstance(value, dict) and value:
-                    arr.append(f"{key_upper}:")
-                    for subkey, subval in value.items():
-                        arr.append(f"  {subkey}: {subval}")
-                elif isinstance(value, dict) and not value:
-                    arr.append(f"{key_upper}: none")
+                if isinstance(value, dict):
+                    if not value:
+                        arr.append(f"{key_upper}: none")
+                    else:
+                        arr.append(f"{key_upper}:")
+                        if key_upper == "BATTERY":
+                            for subkey, subval in value.items():
+                                arr.append(f"  {add_unit(subkey, subval)}")
+                        else:
+                            for subkey, subval in value.items():
+                                arr.append(f"  {subkey}:")
+                                if isinstance(subval, list):
+                                    for item in subval:
+                                        if isinstance(item, dict):
+                                            item_str = '\n    '.join(add_unit(k, v) for k, v in item.items())
+                                            arr.append(f"    {item_str}")
+                                        else:
+                                            arr.append(f"    {item}")
+                                else:
+                                    arr.append(f"    {subval}")
                 else:
                     arr.append(f"{key_upper}: {value}")
             return arr
