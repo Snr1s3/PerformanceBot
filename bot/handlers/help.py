@@ -3,7 +3,8 @@ from telegram.ext import ContextTypes
 
 
 async def help_command(
-        update: Update, context: ContextTypes.DEFAULT_TYPE
+        update: Update,
+        context: ContextTypes.DEFAULT_TYPE
     ) -> None:
     msg = (
         "<b>Available Commands:</b>\n"

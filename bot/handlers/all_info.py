@@ -13,8 +13,10 @@ from handlers.system_info import SystemHandler
 
 class AllHandler(BaseInfo):
     async def all_Handler(
-            self, update: Update, context: ContextTypes.DEFAULT_TYPE
-        ) -> None:
+        self,
+        update: Update,
+        context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         msg = "<b>All System Info:</b>\n"
         await self.send_long_message(msg, update, parse_mode="HTML")
 
@@ -33,7 +35,9 @@ class AllHandler(BaseInfo):
             if method:
                 msg = await method(update, context)
                 if msg:
-                    await self.send_long_message(msg, update, parse_mode="HTML")
+                    await self.send_long_message(
+                        msg, update, parse_mode="HTML"
+                    )
 
         await update.message.reply_text(
             "<b>ALL INFO:</b>\n"
@@ -52,7 +56,6 @@ class AllHandler(BaseInfo):
         )
 
         await update.message.reply_text(
-            "<b>DOCKER INFO:</b>\n"
-            + "\n".join(self.docker),
+            "\n".join(self.docker),
             parse_mode="HTML"
         )
