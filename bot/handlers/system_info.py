@@ -4,6 +4,10 @@ from .base_info import BaseInfo
 
 
 class SystemHandler(BaseInfo):
-    async def system_Handler(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def system_Handler(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         msg = self.system()
-        await self.send_long_message(msg, update, parse_mode="HTML")
+        await self.send_long_message(
+            msg, update, parse_mode="HTML"
+        )

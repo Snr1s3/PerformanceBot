@@ -125,7 +125,9 @@ async def system_monitor():
                 for interface_name, stats in net_if_stats.items():
                     net_if_stats_json[interface_name] = {
                         "isup": stats.isup,
-                        "duplex": stats.duplex.name if hasattr(stats.duplex, 'name') else str(stats.duplex),
+                        "duplex": stats.duplex.name
+                        if hasattr(stats.duplex, 'name')
+                        else str(stats.duplex),
                         "speed": stats.speed,
                         "mtu": stats.mtu,
                         "flags": stats.flags
@@ -196,8 +198,18 @@ async def system_monitor():
                         "id": container.id[:12] if container.id else "unknown",
                         "name": container.name if container.name else "unknown",
                         "status": container.status if container.status else "unknown",
-                        "image": container.image.tags[0] if container.image.tags else (container.image.id[:12] if container.image.id else "unknown"),
-                        "created": container.attrs.get('Created', '')[:19] if container.attrs.get('Created') else 'unknown'
+                        "image": container.image.tags[0]
+                        if container.image.tags
+                        else (
+                            container.image.id[:12]
+                            if container.image.id
+                            else "unknown"
+                        ),
+                        "created": (
+                            container.attrs.get('Created', '')[:19]
+                            if container.attrs.get('Created')
+                            else 'unknown'
+                        )
                     }
 
                     container_info = {
@@ -219,8 +231,12 @@ async def system_monitor():
                         "release": platform.release(),
                         "version": platform.version(),
                         "machine": platform.machine(),
-                        "boottime": datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%Y-%m-%d %H:%M:%S"),
-                        "uptime_seconds": int(time.time() - psutil.boot_time()),
+                        "boottime": datetime.datetime.fromtimestamp(
+                        psutil.boot_time()
+                    ).strftime("%Y-%m-%d %H:%M:%S"),
+                        "uptime_seconds": int(
+                        time.time() - psutil.boot_time()
+                    ),
                         "users_count": len(users_json),
                         "users": users_json,
                     },
@@ -231,9 +247,15 @@ async def system_monitor():
                         "frequency": round(psutil.cpu_freq().current, 1),
                     },
                     "memory": {
-                        "ram_total": round(psutil.virtual_memory().total / (1024**3), 2),
-                        "ram_available": round(psutil.virtual_memory().available / (1024**3), 2),
-                        "ram_percent": round(psutil.virtual_memory().percent, 1),
+                        "ram_total": round(
+                        psutil.virtual_memory().total / (1024**3), 2
+                    ),
+                        "ram_available": round(
+                        psutil.virtual_memory().available / (1024**3), 2
+                    ),
+                        "ram_percent": round(
+                        psutil.virtual_memory().percent, 1
+                    ),
                     },
                     "disks": {
                         "disk": disks_json,
@@ -278,7 +300,10 @@ async def lifespan(app: FastAPI):
     except asyncio.CancelledError:
         print("System monitor stopped")
 
-app = FastAPI(title="Performance Dashboard API", lifespan=lifespan)
+app = FastAPI(
+    title="Performance Dashboard API",
+    lifespan=lifespan
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -301,7 +326,9 @@ async def websocket_endpoint(websocket: WebSocket):
     async with data_lock:
         if latest_data:
             try:
-                await websocket.send_text(json.dumps(latest_data))
+                await websocket.send_text(
+                    json.dumps(latest_data)
+                )
                 print(f"Initial data sent to client: {id(websocket)}")
             except Exception as e:
                 print(f"Failed to send initial data: {e}")
@@ -324,4 +351,6 @@ def read_root():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(
+        app, host="0.0.0.0", port=8000, reload=True
+    )
