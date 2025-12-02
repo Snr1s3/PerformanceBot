@@ -2,7 +2,7 @@ name: Notify Me
 
 on:
   workflow_run:
-    workflows: ["Build and Push Docker image", "Deploy mdBook site to Pages"]
+    workflows: ["Build and Push Docker image", "Deploy mdBook site to Pages","Testing Flask"]
     types:
       - completed
 jobs:
