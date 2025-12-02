@@ -1,6 +1,7 @@
 from .info_base import InfoBase
 from typing import Any, Dict, List
 
+
 class SystemInfo(InfoBase):
     def fetch(self) -> List[str]:
         def formatter(info: Dict[str, Any]) -> List[str]:

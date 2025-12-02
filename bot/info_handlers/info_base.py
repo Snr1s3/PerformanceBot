@@ -2,6 +2,7 @@ import json
 from typing import Any, Callable, List, Optional, Dict, Union
 from logger import logger
 
+
 class InfoBase:
     def __init__(self, socket_con: Any) -> None:
         self.socket_con = socket_con
