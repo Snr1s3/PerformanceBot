@@ -33,7 +33,7 @@ class SensorsInfo(InfoBase):
             return f"{k}: {int(v)}%"
         return f"{k}: {v}"
     
-    def subvalues(self,arr, value):
+    def subvalues(self, arr, value):
         for subkey, subval in value.items():
             arr.append(f"  {subkey}:")
             if isinstance(subval, list):
