@@ -1,5 +1,6 @@
 from .info_base import InfoBase
 
+
 class DockerInfo(InfoBase):
     def fetch(self):
         def formatter(info):

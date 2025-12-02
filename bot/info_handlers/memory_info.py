@@ -1,5 +1,6 @@
 from .info_base import InfoBase
 
+
 class MemoryInfo(InfoBase):
     def fetch(self):
         def formatter(info):

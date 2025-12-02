@@ -16,12 +16,12 @@ class TestBot:
         base_info = BaseInfo()
         cpu = base_info.cpu()
         assert cpu == "<b>CPU INFO:</b>\nCORES_COUNT: 4\nTHREADS_COUNT: 8\nCPU: 4.5%\nFREQUENCY: 2611.2MHz"
-    
+
     def test_disk(self):
         base_info = BaseInfo()
         disk = base_info.disk()
         assert disk == "<b>DISK INFO:</b>\n  DEVICE: /dev/sdd\n  MOUNTPOINT: /\n  FSTYPE: ext4\n  TOTAL_GB: 1006.85GB\n  USED_GB: 10.16GB\n  FREE_GB: 945.48GB\n  PERCENT: 1.0%\n"
-    
+
     def test_memory(self):
         base_info = BaseInfo()
         memory = base_info.memory()
@@ -32,7 +32,6 @@ class TestBot:
         base_info = BaseInfo()
         docker = base_info.docker()
         assert docker == "<b>DOCKER INFO:</b>\nDOCKER IMAGES:\n  ID: sha256:7c2c6ee6dd0d\n  Tags: performance-bot:latest\n  Size: 144.64 MB\n  Created: 2025-11-26T14:18:15\n\nDOCKER CONTAINERS:\n  ID: 970b24a9730e\n  Name: bot2\n  Status: exited\n  Image: performance-bot:latest\n  Created: 2025-11-26T14:18:18\n"
-
 
     def test_sensors(self):
         base_info = BaseInfo()

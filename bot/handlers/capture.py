@@ -3,6 +3,7 @@ from telegram.ext import ContextTypes
 
 from .base_info import BaseInfo
 
+
 class CaptureHandler(BaseInfo):
     async def capture_Handler(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         msg = f"<b>Capturing Server Status</b>"

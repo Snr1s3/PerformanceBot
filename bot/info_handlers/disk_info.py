@@ -1,5 +1,6 @@
 from .info_base import InfoBase
 
+
 class DiskInfo(InfoBase):
     def fetch(self):
         def formatter(info):

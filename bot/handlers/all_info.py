@@ -11,7 +11,6 @@ from handlers.sensors_info import SensorsHandler
 from handlers.system_info import SystemHandler
 
 
-
 class AllHandler(BaseInfo):
     async def all_Handler(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         msg = "<b>All System Info:</b>\n"
@@ -31,5 +30,5 @@ class AllHandler(BaseInfo):
             method = getattr(handler, method_name, None)
             if method:
                 msg = await method(update, context)
-                if msg: 
+                if msg:
                     await self.send_long_message(msg, update, parse_mode="HTML")

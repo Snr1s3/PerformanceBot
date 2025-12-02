@@ -13,7 +13,8 @@ import docker
 docker_client = docker.from_env()
 connected_clients: Set[WebSocket] = set()
 latest_data: Dict = {}
-data_lock = asyncio.Lock() 
+data_lock = asyncio.Lock()
+
 
 async def system_monitor():
     global latest_data, connected_clients, docker_client
@@ -88,7 +89,7 @@ async def system_monitor():
                 else:
                     battery_json = {"info": "No battery detected"}
             except (AttributeError, OSError):
-                battery_json = {"info": "Battery data not available"}           
+                battery_json = {"info": "Battery data not available"}
             net_io_json = {}
             try:
                 net_io_total = psutil.net_io_counters()
@@ -102,7 +103,7 @@ async def system_monitor():
                     "dropin": net_io_total.dropin,
                     "dropout": net_io_total.dropout
                 }
-                
+
                 net_io_per_interface = psutil.net_io_counters(pernic=True)
                 net_io_json["per_interface"] = {}
                 for interface_name, stats in net_io_per_interface.items():
@@ -123,14 +124,15 @@ async def system_monitor():
                 net_if_stats = psutil.net_if_stats()
                 for interface_name, stats in net_if_stats.items():
                     net_if_stats_json[interface_name] = {
-                        "isup": stats.isup,           
-                        "duplex": stats.duplex.name if hasattr(stats.duplex, 'name') else str(stats.duplex),  
-                        "speed": stats.speed,         
-                        "mtu": stats.mtu,            
-                        "flags": stats.flags         
+                        "isup": stats.isup,
+                        "duplex": stats.duplex.name if hasattr(stats.duplex, 'name') else str(stats.duplex),
+                        "speed": stats.speed,
+                        "mtu": stats.mtu,
+                        "flags": stats.flags
                     }
             except (AttributeError, OSError):
-                net_if_stats_json = {"info": "Network interface stats not available"}
+                net_if_stats_json = {
+                    "info": "Network interface stats not available"}
             nic_addrs_json = {}
             try:
                 for interface_name, addresses in psutil.net_if_addrs().items():
@@ -144,7 +146,8 @@ async def system_monitor():
                         }
                         nic_addrs_json[interface_name].append(addr_info)
             except (AttributeError, OSError):
-                nic_addrs_json = {"info": "Network interface addresses not available"}
+                nic_addrs_json = {
+                    "info": "Network interface addresses not available"}
             merged_interfaces = {}
             all_interfaces = set()
             if isinstance(net_if_stats_json, dict) and "info" not in net_if_stats_json:
@@ -153,24 +156,26 @@ async def system_monitor():
                 all_interfaces.update(nic_addrs_json.keys())
             for interface_name in all_interfaces:
                 merged_interfaces[interface_name] = {}
-                
+
                 if interface_name in net_if_stats_json:
                     merged_interfaces[interface_name]["stats"] = net_if_stats_json[interface_name]
                 else:
-                    merged_interfaces[interface_name]["stats"] = {"info": "Stats not available"}
-                
+                    merged_interfaces[interface_name]["stats"] = {
+                        "info": "Stats not available"}
+
                 if interface_name in nic_addrs_json:
                     merged_interfaces[interface_name]["addresses"] = nic_addrs_json[interface_name]
                 else:
-                    merged_interfaces[interface_name]["addresses"] = [{"info": "Addresses not available"}]
-            
+                    merged_interfaces[interface_name]["addresses"] = [
+                        {"info": "Addresses not available"}]
+
             docker_images = []
-            i = 0 
+            i = 0
             for img in docker_client.images.list():
                 try:
                     img_data = {
                         "id": img.id[:19] if img.id else "unknown",
-                        "tags": img.tags if img.tags else ["<none>"], 
+                        "tags": img.tags if img.tags else ["<none>"],
                         "size_mb": round(img.attrs.get('Size', 0) / (1024 * 1024), 2),
                         "created": img.attrs.get('Created', '')[:19] if img.attrs.get('Created') else 'unknown'
                     }
@@ -179,7 +184,7 @@ async def system_monitor():
                     }
                     docker_images.append(image_info)
                     i += 1
-                    
+
                 except Exception as e:
                     print(f"Error processing image: {e}")
                     continue
@@ -194,13 +199,13 @@ async def system_monitor():
                         "image": container.image.tags[0] if container.image.tags else (container.image.id[:12] if container.image.id else "unknown"),
                         "created": container.attrs.get('Created', '')[:19] if container.attrs.get('Created') else 'unknown'
                     }
-                    
+
                     container_info = {
                         f"container{j}": container_data
                     }
                     docker_containers.append(container_info)
                     j += 1
-                    
+
                 except Exception as e:
                     print(f"Error processing container: {e}")
                     continue
@@ -210,9 +215,9 @@ async def system_monitor():
                     "timestamp": datetime.datetime.now().isoformat(),
                     "system_info": {
                         "platform": platform.system(),
-                        "node": platform.node(),  
-                        "release": platform.release(),         
-                        "version": platform.version(),         
+                        "node": platform.node(),
+                        "release": platform.release(),
+                        "version": platform.version(),
                         "machine": platform.machine(),
                         "boottime": datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%Y-%m-%d %H:%M:%S"),
                         "uptime_seconds": int(time.time() - psutil.boot_time()),
@@ -234,7 +239,7 @@ async def system_monitor():
                         "disk": disks_json,
                     },
                     "network": {
-                        "io_counters": net_io_json,       
+                        "io_counters": net_io_json,
                         "interfaces": merged_interfaces,
                     },
                     "sensors": {
@@ -242,7 +247,7 @@ async def system_monitor():
                         "fans": fans_json,
                         "temperatures": temperatures_json,
                     },
-                    "docker":{
+                    "docker": {
                         "images": docker_images,
                         "containers": docker_containers
                     }
@@ -260,11 +265,12 @@ async def system_monitor():
             print(f"System monitor error: {e}")
         await asyncio.sleep(2)
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Starting background system monitor...")
     monitor_task = asyncio.create_task(system_monitor())
-    yield 
+    yield
     print("Shutting down system monitor...")
     monitor_task.cancel()
     try:
@@ -284,13 +290,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     print(f"Client connected: {id(websocket)}")
-    
+
     connected_clients.add(websocket)
-    
+
     async with data_lock:
         if latest_data:
             try:
@@ -307,11 +314,13 @@ async def websocket_endpoint(websocket: WebSocket):
         connected_clients.discard(websocket)
         print(f"Client {id(websocket)} removed")
 
+
 @app.get("/")
 def read_root():
     return {
         "message": "Performance Dashboard API is running."
     }
+
 
 if __name__ == "__main__":
     import uvicorn

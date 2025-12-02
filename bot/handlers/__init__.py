@@ -12,6 +12,7 @@ from .memory_info import MemoryHandler
 from .disk_info import DiskHandler
 from .help import help_command
 
+
 def setup_handlers(app):
     all_Handler = AllHandler()
     docker_Handler = DockerHandler()
@@ -33,5 +34,6 @@ def setup_handlers(app):
     app.add_handler(CommandHandler("sensors", sensors_Handler.sensors_Handler))
     app.add_handler(CommandHandler("all", all_Handler.all_Handler))
     app.add_handler(CommandHandler("help", help_command))
-    app.add_handler(CommandHandler("capture",capture_Handler.capture_Handler))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, help_command))
+    app.add_handler(CommandHandler("capture", capture_Handler.capture_Handler))
+    app.add_handler(MessageHandler(
+        filters.TEXT & ~filters.COMMAND, help_command))

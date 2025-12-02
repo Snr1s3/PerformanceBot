@@ -1,5 +1,6 @@
 from .info_base import InfoBase
 
+
 class SensorsInfo(InfoBase):
     def fetch(self):
         def formatter(info):
@@ -29,7 +30,8 @@ class SensorsInfo(InfoBase):
                                 if isinstance(subval, list):
                                     for item in subval:
                                         if isinstance(item, dict):
-                                            item_str = '\n    '.join(add_unit(k, v) for k, v in item.items())
+                                            item_str = '\n    '.join(
+                                                add_unit(k, v) for k, v in item.items())
                                             arr.append(f"    {item_str}")
                                         else:
                                             arr.append(f"    {item}")

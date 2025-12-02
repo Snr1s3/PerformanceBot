@@ -1,5 +1,6 @@
 from .info_base import InfoBase
 
+
 class NetworkInfo(InfoBase):
     def fetch(self):
         def formatter(info):
@@ -33,7 +34,8 @@ class NetworkInfo(InfoBase):
                     if addresses:
                         arr.append("    ADDRESSES:")
                         for addr in addresses:
-                            addr_str = "\n       ".join(f"{k}: {v}" for k, v in addr.items())
+                            addr_str = "\n       ".join(
+                                f"{k}: {v}" for k, v in addr.items())
                             arr.append(f"      {addr_str}")
             return arr
         return self.get_info("network", formatter)

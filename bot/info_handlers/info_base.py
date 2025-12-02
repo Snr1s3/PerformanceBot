@@ -1,5 +1,6 @@
 import json
 
+
 class InfoBase:
     def __init__(self, socket_con):
         self.socket_con = socket_con
