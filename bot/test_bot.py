@@ -1,7 +1,4 @@
 import json
-import os
-import pytest
-from main import tests as bot_tests
 from handlers.base_info import BaseInfo
 
 
@@ -44,12 +41,7 @@ class TestBot:
         with open(capture) as f1, open('jsons/TEST.json') as f2:
             obj1 = json.load(f1)
             obj2 = json.load(f2)
-        result = None
-        if obj1 == obj2:
-            result = True
-        else:
-            result = False
-        assert result == True
+        assert obj1 == obj2
 
     def test_network(self):
         base_info = BaseInfo()

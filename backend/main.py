@@ -17,7 +17,7 @@ data_lock = asyncio.Lock()
 
 
 async def system_monitor():
-    global latest_data, connected_clients, docker_client
+    global latest_data, connected_clients
     print("System monitor started...")
     while True:
         try:

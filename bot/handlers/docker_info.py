@@ -1,4 +1,3 @@
-import html
 from telegram import Update
 from telegram.ext import ContextTypes
 from .base_info import BaseInfo
