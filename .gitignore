@@ -9,9 +9,11 @@ yarn-debug.log*
 yarn-error.log*
 # Ignore all JSON files in bot/jsons/
 bot/jsons/*.json
+jsons/*.json
 
 # But do not ignore TEST.json
 !bot/jsons/TEST.json
+!jsons/TEST.json
 run_backend.sh
 run_bot.sh
 # Python
