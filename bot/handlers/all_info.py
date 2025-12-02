@@ -12,7 +12,9 @@ from handlers.system_info import SystemHandler
 
 
 class AllHandler(BaseInfo):
-    async def all_Handler(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def all_Handler(
+            self, update: Update, context: ContextTypes.DEFAULT_TYPE
+        ) -> None:
         msg = "<b>All System Info:</b>\n"
         await self.send_long_message(msg, update, parse_mode="HTML")
 
