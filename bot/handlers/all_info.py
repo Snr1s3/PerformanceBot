@@ -32,3 +32,25 @@ class AllHandler(BaseInfo):
                 msg = await method(update, context)
                 if msg:
                     await self.send_long_message(msg, update, parse_mode="HTML")
+
+        await update.message.reply_text(
+            "<b>ALL INFO:</b>\n"
+            + "\n".join(self.system)
+            + "\n"
+            + "\n".join(self.cpu)
+            + "\n"
+            + "\n".join(self.memory)
+            + "\n"
+            + "\n".join(self.disk)
+            + "\n"
+            + "\n".join(self.network)
+            + "\n"
+            + "\n".join(self.sensors),
+            parse_mode="HTML"
+        )
+
+        await update.message.reply_text(
+            "<b>DOCKER INFO:</b>\n"
+            + "\n".join(self.docker),
+            parse_mode="HTML"
+        )

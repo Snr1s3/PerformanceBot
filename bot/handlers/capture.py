@@ -11,3 +11,4 @@ class CaptureHandler(BaseInfo):
         await self.send_long_message(msg, update, parse_mode="HTML")
         with open(filename, 'rb') as f:
             await update.message.reply_document(f, filename=filename)
+        
