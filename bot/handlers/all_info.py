@@ -41,21 +41,21 @@ class AllHandler(BaseInfo):
 
         await update.message.reply_text(
             "<b>ALL INFO:</b>\n"
-            + "\n".join(self.system)
+            + self.system()
             + "\n"
-            + "\n".join(self.cpu)
+            + self.cpu()
             + "\n"
-            + "\n".join(self.memory)
+            + self.memory()
             + "\n"
-            + "\n".join(self.disk)
+            + self.disk()
             + "\n"
-            + "\n".join(self.network)
+            + self.network()
             + "\n"
-            + "\n".join(self.sensors),
+            + self.sensors(),
             parse_mode="HTML"
         )
 
         await update.message.reply_text(
-            "\n".join(self.docker),
+            self.docker(),
             parse_mode="HTML"
         )

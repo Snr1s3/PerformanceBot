@@ -1,7 +1,7 @@
 import os
 import websocket
 import json
-
+from logger import logger
 
 class SocketCon:
     _instance = None
@@ -23,7 +23,7 @@ class SocketCon:
                 self.ws.connect(url)
                 self.connected = True
             except Exception as e:
-                print(f"Could not connect to {url}: {e}")
+                logger.error(f"Could not connect to {url}: {e}")
                 self.ws = None
                 self.connected = False
 
@@ -32,13 +32,13 @@ class SocketCon:
             try:
                 return self.ws.recv()
             except Exception as e:
-                print(f"WebSocket receive error: {e}")
+                logger.error(f"WebSocket receive error: {e}")
                 self.ws = None
                 self.connected = False
-        print("Falling back to jsons/TEST.json")
+        logger.info("Falling back to jsons/TEST.json")
         try:
             with open("jsons/TEST.json", "r") as f:
                 return json.dumps(json.load(f))
         except Exception as e:
-            print(f"Error reading jsons/TEST.json: {e}")
+            logger.error(f"Error reading jsons/TEST.json: {e}")
             return '{}'

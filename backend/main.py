@@ -9,6 +9,7 @@ import psutil
 import asyncio
 import json
 import docker
+from logger import logger
 
 docker_client = docker.from_env()
 connected_clients: Set[WebSocket] = set()
@@ -18,7 +19,7 @@ data_lock = asyncio.Lock()
 
 async def system_monitor():
     global latest_data, connected_clients
-    print("System monitor started...")
+    logger.info("System monitor started...")
     while True:
         try:
             disks_json = []
@@ -232,7 +233,7 @@ async def system_monitor():
                     i += 1
 
                 except Exception as e:
-                    print(f"Error processing image: {e}")
+                    logger.error(f"Error processing image: {e}")
                     continue
             docker_containers = []
             j = 0
@@ -274,7 +275,7 @@ async def system_monitor():
                     j += 1
 
                 except Exception as e:
-                    print(f"Error processing container: {e}")
+                    logger.error(f"Error processing container: {e}")
                     continue
 
             async with data_lock:
@@ -334,26 +335,26 @@ async def system_monitor():
                 try:
                     await client.send_text(json.dumps(latest_data))
                 except Exception as e:
-                    print(f"Failed to send to client: {e}")
+                    logger.error(f"Failed to send to client: {e}")
                     disconnected_clients.add(client)
             connected_clients -= disconnected_clients
-            print(f"Data sent to {len(connected_clients)} clients")
+            logger.info(f"Data sent to {len(connected_clients)} clients")
         except Exception as e:
-            print(f"System monitor error: {e}")
+            logger.error(f"System monitor error: {e}")
         await asyncio.sleep(2)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("Starting background system monitor...")
+    logger.info("Starting background system monitor...")
     monitor_task = asyncio.create_task(system_monitor())
     yield
-    print("Shutting down system monitor...")
+    logger.info("Shutting down system monitor...")
     monitor_task.cancel()
     try:
         await monitor_task
     except asyncio.CancelledError:
-        print("System monitor stopped")
+        logger.error("System monitor stopped")
 
 app = FastAPI(
     title="Performance Dashboard API",
@@ -374,7 +375,7 @@ app.add_middleware(
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
-    print(f"Client connected: {id(websocket)}")
+    logger.info(f"Client connected: {id(websocket)}")
 
     connected_clients.add(websocket)
 
@@ -384,17 +385,17 @@ async def websocket_endpoint(websocket: WebSocket):
                 await websocket.send_text(
                     json.dumps(latest_data)
                 )
-                print(f"Initial data sent to client: {id(websocket)}")
+                logger.info(f"Initial data sent to client: {id(websocket)}")
             except Exception as e:
-                print(f"Failed to send initial data: {e}")
+                logger.error(f"Failed to send initial data: {e}")
     try:
         while True:
             await asyncio.sleep(1)
     except Exception as e:
-        print(f"Client {id(websocket)} disconnected: {e}")
+        logger.error(f"Client {id(websocket)} disconnected: {e}")
     finally:
         connected_clients.discard(websocket)
-        print(f"Client {id(websocket)} removed")
+        logger.info(f"Client {id(websocket)} removed")
 
 
 @app.get("/")

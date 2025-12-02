@@ -17,15 +17,10 @@ This guide will help you set up and run the Telegram bot for the Performance Das
 Try to connect to the bot creating bot.py
 
 ```python
-    import logging
     from telegram.ext import ApplicationBuilder
     from config import BOT_TOKEN
     from handlers import setup_handlers
 
-    logging.basicConfig(
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        level=logging.INFO
-    )
 
     def main() -> None:
         app = ApplicationBuilder().token(BOT_TOKEN).build()

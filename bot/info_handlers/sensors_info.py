@@ -1,10 +1,11 @@
+from typing import Any, Dict, List
 from .info_base import InfoBase
 
 
 class SensorsInfo(InfoBase):
-    def fetch(self):
-        def formatter(info):
-            arr = []
+    def fetch(self) -> List[str]:
+        def formatter(info: Dict[str, Any]) -> List[str]:
+            arr: List[str] = []
             for key, value in info.items():
                 key_upper = key.upper()
                 if isinstance(value, dict):
@@ -24,7 +25,7 @@ class SensorsInfo(InfoBase):
             return arr
         return self.get_info("sensors", formatter)
 
-    def add_unit(self, k, v):
+    def add_unit(self, k: str, v: Any) -> str:
         if "temp" in k.lower() or k.lower() in {
             "current", "high", "critical"
         }:
@@ -35,7 +36,7 @@ class SensorsInfo(InfoBase):
             return f"{k}: {int(v)}%"
         return f"{k}: {v}"
 
-    def subvalues(self, arr, value):
+    def subvalues(self, arr: List[str], value: Dict[str, Any]) -> None:
         for subkey, subval in value.items():
             arr.append(f"  {subkey}:")
             if isinstance(subval, list):
@@ -50,4 +51,4 @@ class SensorsInfo(InfoBase):
                         arr.append(f"    {item}")
             else:
                 arr.append(f"    {subval}")
-                       
+

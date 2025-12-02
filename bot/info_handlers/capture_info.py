@@ -1,12 +1,13 @@
 from datetime import datetime
 import json
 import os
+from typing import Any, Dict, Optional
 from .info_base import InfoBase
 
 
 class CaptureInfo(InfoBase):
-    def fetch(self):
-        def formatter(info):
+    def fetch(self) -> str:
+        def formatter(info: Optional[Dict[str, Any]]) -> None:
             return None
         os.makedirs("jsons", exist_ok=True)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")

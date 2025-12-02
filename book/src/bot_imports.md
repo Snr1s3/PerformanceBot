@@ -9,9 +9,6 @@ Below is an overview of the main imports used in the Telegram bot component, alo
 - **os**  
   Used for accessing environment variables, such as the Telegram bot token.
 
-- **logging**  
-  Enables logging of bot activity, errors, and debugging information.
-
 ---
 
 ## Third-Party Imports
@@ -28,6 +25,6 @@ Below is an overview of the main imports used in the Telegram bot component, alo
 | Module          | Purpose                                              |
 |-----------------|------------------------------------------------------|
 | os              | Access environment variables (e.g., bot token)       |
-| logging         | Log bot events and errors                            |
+
 | telegram        | Telegram Bot API classes and methods                 |
 | telegram.ext    | Bot framework utilities and handlers                 |

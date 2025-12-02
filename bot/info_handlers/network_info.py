@@ -1,10 +1,11 @@
+from typing import Any, Dict, List
 from .info_base import InfoBase
 
 
 class NetworkInfo(InfoBase):
-    def fetch(self):
-        def formatter(info):
-            arr = []
+    def fetch(self) -> List[str]:
+        def formatter(info: Dict[str, Any]) -> List[str]:
+            arr: List[str] = []
             io_counters = info.get("io_counters", {})
             interfaces = info.get("interfaces", {})
             if io_counters:

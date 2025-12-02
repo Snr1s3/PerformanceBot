@@ -3,10 +3,9 @@ from handlers.base_info import BaseInfo
 
 
 class TestBot:
-
-    def test_system(self):
+    def test_system(self) -> None:
         base_info = BaseInfo()
-        system = base_info.system()
+        system: str = base_info.system()
         assert system == (
             "<b>SYSTEM INFO:</b>\n"
             "PLATFORM: Linux\n"
@@ -24,9 +23,9 @@ class TestBot:
             "  PID: 1234"
         )
 
-    def test_cpu(self):
+    def test_cpu(self) -> None:
         base_info = BaseInfo()
-        cpu = base_info.cpu()
+        cpu: str = base_info.cpu()
         assert cpu == (
             "<b>CPU INFO:</b>\n"
             "CORES_COUNT: 4\n"
@@ -35,9 +34,9 @@ class TestBot:
             "FREQUENCY: 2611.2MHz"
         )
 
-    def test_disk(self):
+    def test_disk(self) -> None:
         base_info = BaseInfo()
-        disk = base_info.disk()
+        disk: str = base_info.disk()
         assert disk == (
             "<b>DISK INFO:</b>\n"
             "  DEVICE: /dev/sdd\n"
@@ -49,10 +48,9 @@ class TestBot:
             "  PERCENT: 1.0%\n"
         )
 
-    def test_memory(self):
+    def test_memory(self) -> None:
         base_info = BaseInfo()
-        memory = base_info.memory()
-        print(memory)
+        memory: str = base_info.memory()
         assert memory == (
             "<b>MEMORY INFO:</b>\n"
             "RAM_TOTAL: 7.61GB\n"
@@ -60,9 +58,9 @@ class TestBot:
             "RAM_PERCENT: 35.1%"
         )
 
-    def test_docker(self):
+    def test_docker(self) -> None:
         base_info = BaseInfo()
-        docker = base_info.docker()
+        docker: str = base_info.docker()
         assert docker == (
             "<b>DOCKER INFO:</b>\n"
             "DOCKER IMAGES:\n"
@@ -79,9 +77,9 @@ class TestBot:
             "  Created: 2025-11-26T14:18:18\n"
         )
 
-    def test_sensors(self):
+    def test_sensors(self) -> None:
         base_info = BaseInfo()
-        sensors = base_info.sensors()
+        sensors: str = base_info.sensors()
         assert sensors == (
             "<b>Sensors INFO:</b>\n"
             "BATTERY:\n"
@@ -105,17 +103,17 @@ class TestBot:
             "    critical: 128.0°C"
         )
 
-    def test_capture(self):
+    def test_capture(self) -> None:
         base_info = BaseInfo()
-        capture = base_info.capture()
+        capture: str = base_info.capture()
         with open(capture) as f1, open('jsons/TEST.json') as f2:
             obj1 = json.load(f1)
             obj2 = json.load(f2)
         assert obj1 == obj2
 
-    def test_network(self):
+    def test_network(self) -> None:
         base_info = BaseInfo()
-        network = base_info.network()
+        network: str = base_info.network()
         assert network == (
             "<b>NETWORK INFO:</b>\n"
             "IO COUNTERS:\n"

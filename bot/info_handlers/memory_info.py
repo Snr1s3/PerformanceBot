@@ -1,10 +1,11 @@
+from typing import Any, Dict, List
 from .info_base import InfoBase
 
 
 class MemoryInfo(InfoBase):
-    def fetch(self):
-        def formatter(info):
-            arr = []
+    def fetch(self) -> List[str]:
+        def formatter(info: Dict[str, Any]) -> List[str]:
+            arr: List[str] = []
             for key, value in info.items():
                 key_upper = key.upper()
                 if key_upper == "RAM_TOTAL":
