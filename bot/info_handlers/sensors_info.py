@@ -50,4 +50,3 @@ class SensorsInfo(InfoBase):
                         arr.append(f"    {item}")
             else:
                 arr.append(f"    {subval}")
-                       
