@@ -1,27 +1,24 @@
 name: Notify Me
 
 on:
-  push:
-    branches:
-      - main
-
+  workflow_run:
+    workflows: ["Test and Build", "Deploy mdBook site to Pages"]
+    types:
+      - completed
 jobs:
-  notify:
+  on-success:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Send Telegram notification
-        env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-          RESPONSE=$(curl -s -w "%{http_code}" -o response.txt -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage \
-            -d chat_id=${TELEGRAM_CHAT_ID} \
-            -d parse_mode=Markdown \
-            -d text="🚀 *New push to repository:* *${{ github.repository }}*%0A%0A*Branch:* \`${{ github.ref_name }}\`%0A*Commit:* [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})%0A*By:* ${{ github.actor }}%0A%0A_See more:_ [${{ github.server_url }}/${{ github.repository }}](${{ github.server_url }}/${{ github.repository }})")
-          if [ "$RESPONSE" = "200" ]; then
-            echo "✅ Telegram notification sent successfully."
-          else
-            echo "❌ Failed to send Telegram notification. HTTP status: $RESPONSE"
-            cat response.txt
-            exit 1
-          fi
+      - run: |
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+            -d text="✅ GitHub Actions: Workflow '${{ github.event.workflow_run.name }}' completed for ${{ github.repository }}."
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: |
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+            -d text="❎ GitHub Actions: Workflow '${{ github.event.workflow_run.name }}' failed for ${{ github.repository }}."
