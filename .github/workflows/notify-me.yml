@@ -3,14 +3,19 @@ name: Notify Me
 on:
   workflow_run:
     workflows: ["Test and Build", "Deploy mdBook site to Pages"]
-    types:
-      - completed
+    types: [completed]
+
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Notify Me Through Telegram
+      - name: Send Telegram notification
         uses: Snr1s3/notify-telegram-action@v1.0.1
         with:
           telegram_token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           telegram_chat_id: ${{ secrets.TELEGRAM_CHAT_ID }}
+          message: |
+            🔔 *${{ github.repository }}*
+            *Workflow:* ${{ github.event.workflow_run.name }}
+            *Conclusion:* ${{ github.event.workflow_run.conclusion }}
+            *Run:* ${{ github.event.workflow_run.html_url }}
