@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send Telegram notification
-        uses: Snr1s3/notify-telegram-action@v1.0.1
+        uses: Snr1s3/notify-telegram-action@v1.0.2
         with:
           telegram_token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           telegram_chat_id: ${{ secrets.TELEGRAM_CHAT_ID }}
